@@ -1,0 +1,158 @@
+﻿body {
+    background-image: url('/assets/images/bg-introduce.png') !important;
+    background-size: cover !important;
+}
+
+
+#main {
+    margin-top: 4rem;
+}
+
+@media (min-width: 1100px) {
+    #main {
+        margin-top: 10rem !important;
+    }
+}
+
+#main-form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#header-content {
+    width: 80%;
+    max-width: 1250px;
+    border: 2px solid black;
+    border-radius: 20px;
+    box-shadow: 0.1rem 0.4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.required {
+    color: red;
+}
+
+.ck-editor__editable_inline {
+    min-height: 300px;
+    max-height: 700px;
+    height: 300px;
+    width: 100%;
+}
+.header-content-child {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+
+label {
+    cursor: pointer;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.apply-selection {
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.checkboxes {
+    display: none;
+    position: absolute;
+    top: 100%;
+    /* Đặt dưới nút */
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    /* Đảm bảo rằng nó ở trên cùng */
+    width: 100%;
+    /* Điều chỉnh chiều rộng nếu cần */
+}
+
+.inner-wrap {
+    padding: 5px 10px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    overflow-y: auto;
+}
+
+    .inner-wrap > label {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 0;
+    }
+
+        .inner-wrap > label:hover {
+            background-color: #ccc;
+        }
+
+
+
+.list-picture{
+    width: 100%;
+    text-align:center;
+}
+.intro-picture {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: fit-content;
+    min-width: 70%;
+    border-radius: 20px;
+    padding: 14px;
+    justify-content:space-evenly;
+    border-bottom: 2px solid black;
+}
+
+    .intro-picture .previewImage {
+        width: 160px;
+        height: 160px;
+        border: 1px solid black;
+    }
+
+        .intro-picture .previewImage img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .intro-picture input {
+        width: 200px;
+    }
+
+.intro-content,.detail-content {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, .1049607843) 0px 3px 10px;
+}

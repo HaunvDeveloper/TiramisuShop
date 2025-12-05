@@ -1,0 +1,126 @@
+﻿
+
+body {
+    background-image: url('/assets/images/bg-introduce.png') !important;
+    background-size: cover !important;
+}
+
+
+#content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.intro-picture {
+    width: 100%;
+    height: 300px;
+}
+
+    .intro-picture img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+
+
+.cross-over {
+    width: 100%;
+    height: 40px;
+    background-color: #e1e1e1;
+}
+
+.main-content {
+    margin: 2rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+    .card:hover {
+        transition: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, .15);
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+
+.card-header {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    height: 150px;
+}
+
+.product-title {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.product-description {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #777;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.detail-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #0c6502f3;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    align-self: center;
+    flex-shrink: 0;
+    min-width:100px;
+}
+
+    .detail-link:hover {
+        background-color: rgb(61, 199, 15);
+        color: #fff;
+    }

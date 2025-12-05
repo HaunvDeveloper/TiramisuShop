@@ -1,0 +1,161 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/home-index.css">
+
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+}
+<section id="content" style="background-image: url('/assets/images/bg-introduce.png'); background-size: cover;">
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt=""></div>
+                @* <div class="swiper-slide"><img src="~/assets/images/intro2.png" alt=""></div>
+                <div class="swiper-slide"><img src="~/assets/images/intro3.png" alt=""></div> *@
+            </div>
+        </div>
+    </div>
+    <div id="intro-title">
+        <div class="intro-title-content scroll-animate">
+            <div>Localizer["title-intro"] <strong>Localizer["subname-company"]</strong></div>
+            <p>Localizer["main-subtitle"]</p>
+        </div>
+    </div>
+    <div class="intro-para">
+        <div class="container">
+            <div class="para-content scroll-animate">
+                <h4>Localizer["name-company"]</h4>
+
+                <i><b>“Always Fresh to You”</b></i>
+
+                <p>Localizer["intro-content-1"]</p>
+
+                <p>Localizer["intro-content-2"]</p>
+
+                <p>
+                    Localizer["intro-content-3"]
+                </p>
+                <p>Localizer["intro-content-4"]</p>
+            </div>
+            <div class="para-img scroll-animate">
+                <img src="~/assets/images/intro-sub.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="our-products">
+        <div class="intro-title-content scroll-animate mb-2">
+            <div><strong>Localizer["our-products"]</strong></div>
+            <p>Localizer["main-subtitle"]</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                @* @if (ViewBag.ProductTypes != null)
+                {
+                    @foreach (var type in ViewBag.ProductTypes)
+                    {
+                        <div class="col-lg-3 col-6 mb-lg-0 mb-5 mt-sm-5 mt-lg-0 mt-3 scroll-animate-d2">
+                            <div class="product">
+                                <a href="@Url.Action("Index", "Product", new { type = type.Code })" class="product--links" title="">
+
+
+                                    <div class="product--content">
+                                        <div class="top-index">
+                                            <h2 class="title">
+                                                @type.Name.Split("##EnVi##")[cul]
+                                            </h2>
+
+                                            <div class="sub">
+                                                <p>(Fresh Fruits and Vegetable, Premium Quality)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product--image">
+                                        <img src="/Data/ProductTypes/@type.PictureFileName" alt="">
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                } *@
+
+            </div>
+
+
+        </div>
+    </div>
+    <div class="section-gallery scroll-animate-bottom">
+        <div class="container position-relative">
+            <div class="intro-title-content scroll-animate">
+                <div><strong>Localizer["our-gallery"]</strong></div>
+                <p>Localizer["main-subtitle"]</p>
+            </div>
+            <div class="swiper ourGallery">
+                <div class="swiper-wrapper">
+                    @* @if (listgalleries != null)
+                    {
+                        @foreach (var gal in listgalleries)
+                        {
+                            <div class="swiper-slide">
+                                <img src="/Data/Galleries/@gal.FileName" />
+                            </div>
+                        }
+                    } *@
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <div class="news">
+    </div>
+</section>
+
+
+
+@section Scripts {
+    <script>
+        var swiper = new Swiper(".introSwiper", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            speed: 3000,
+            loop: true
+        });
+
+        var swiper = new Swiper(".ourGallery", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            initialSlide: 0,
+            loop: true,
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+
+            },
+            pagination: {
+                el: ".swiper-pagination",
+            },
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            speed: 1000
+        });
+
+
+    </script>
+}

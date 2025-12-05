@@ -1,0 +1,260 @@
+﻿@using System.Globalization
+@{
+    var currentController = ViewContext.RouteData.Values["controller"].ToString();
+    var currentAction = ViewContext.RouteData.Values["action"].ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Tiramisu</title>
+    <meta name="keywords" content="" />
+    <meta name="author" content="Công Ty Cổ Phần Goods Link">
+    <meta name="copyright" content="Công Ty Cổ Phần Goods Link [nancy@goli.com.vn]">
+    <link rel="icon" href="~/icon.jpg">
+    <link rel="stylesheet" href="~/lib/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    @await RenderSectionAsync("Links", required: false)
+</head>
+
+<body>
+    <div id="app">
+        <header id="header">
+            <div class="container">
+                @* <div class="header-left">
+                    <a class="logo" href="/">
+                        <img src="~/assets/images/logo.png" alt="Logo">
+                    </a>
+                </div> *@
+                <div class="header-left">
+                    <div class="menu-area">
+                        <div class="menu-bar">
+                            <div class="menu-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <nav class="menu">
+                            <ol>
+                                <li class="menu-item @(currentController == "Home" && currentAction == "Index" ? "active" : "")"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                                <li class="menu-item @(currentController == "Home" && currentAction == "About" ? "active" : "")"><a asp-action="About" asp-controller="Home">About us</a></li>
+                                <li class="menu-item @(currentController == "Product" && currentAction == "Index" ? "active" : "")">
+                                    <a asp-action="Index" asp-controller="Product">
+                                        Menu
+                                    </a>
+                                    <img class="angle" src="~/assets/icons/angle.svg" />
+                                    <ol class="sub-menu">
+                                        @* @if (ViewBag.ProductTypes != null)
+                                        {
+                                            foreach (var productType in ViewBag.ProductTypes)
+                                            {
+                                                <li class="menu-item">
+                                                    <a href="@Url.Action("Index", "Product", new { type = productType.Code })">
+                                                        @productType.Name.Split("##EnVi##")[cul]
+                                                    </a>
+                                                </li>
+                                            }
+                                        } *@
+                                    </ol>
+                                </li>
+                                <li class="menu-item @(currentController == "News" && currentAction == "Index" ? "active" : "")"><a asp-action="Index" asp-controller="News">Events</a></li>
+                                <li class="menu-item @(currentController == "Contact" && currentAction == "Index" ? "active" : "")">
+                                    <a asp-action="Index" asp-controller="Contact">Contact</a>
+                                </li>
+                                
+                            </ol>
+
+                        </nav>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+        </header>
+        <main id="main">
+            @RenderBody()
+        </main>
+        <footer id="footer">
+            <div class="partners">
+                <div class="container">
+                    <div class="partner"><img src="/Data/Partners/mio.png" alt=""></div>
+                    <div class="partner"><img src="/Data/Partners/winmart.png" alt=""></div>
+                    <div class="partner"><img src="/Data/Partners/winmartplus.png" alt=""></div>
+                </div>
+            </div>
+            <div class="prefooter">
+                <div class="subscribe container">
+                    <div class="title">
+                        Đăng ký để nhận tin
+                    </div>
+                    <div class="form-subscribe">
+                        <input placeholder="Nhập địa chỉ email của bạn" type="email" name="Email" id="email-subs">
+                        <button class="btnSubscribe btn-highlight">
+                            <span></span><span></span><span></span><span></span>
+                            <div>ĐĂNG KÝ</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mainfooter">
+                <div class="logo container">
+                    <img src="~/assets/images/logomini.jpg" alt="Golifresh Logo">
+                    <h1>GoliFresh</h1>
+                </div>
+                <div class="container">
+                    <div class="fintro">
+                        <h4>Localizer["name-company"]</h4>
+                        <p>
+                            Localizer["office-content"]<br />
+                            Localizer["office-address"]: Localizer["office-address-content"]<br />
+                            Localizer["workshop_address"]: Localizer["workshop_address_content"]
+                        </p>
+                    </div>
+
+                    <div class="fintro">
+                        <h4>Localizer["branch-name"]</h4>
+                        <p>
+                            Localizer["branch-content"]<br />
+                            Localizer["branch-address"]: Localizer["branch-address-content"]
+                        </p>
+                    </div>
+                    <div class="fintro">
+                        <div class="contact-info">
+                            <img src="~/assets/icons/mail.svg" alt="">
+                            <p><a href="mailto:goodslinkvn@gmail.com">goodslinkvn@gmail.com</a></p>
+                        </div>
+
+                        <div class="contact-info">
+                            <img src="~/assets/icons/phone-regular.svg" alt="">
+                            <p><a href="tel:(028) 3636 6887">(028) 3636 6887 </a></p>
+                        </div>
+                        <div class="contact-info">
+                            <img src="~/assets/icons/phone-regular.svg" alt="">
+                            <p><a href="tel:+84941706750">(+84) 941706750 </a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-contact container">
+                    <a href="https://www.facebook.com/golifresh/" class="social-media">
+                        <img src="~/assets/icons/facebook.png" alt="">
+                    </a>
+                    <a href="https://www.youtube.com/@@Goliexport" class="social-media">
+                        <img src="~/assets/icons/youtube.png" alt="">
+                    </a>
+                    <a href="https://zalo.me/84941706750" class="social-media">
+                        <img src="~/assets/icons/zalo.png" alt="Zalo" />
+                    </a>
+                </div>
+            </div>
+
+            <div class="endfooter">
+                <div class="container">
+                    Copyright © 2024 by Goods Link Joint Stock Company. All rights reserved. Designed and developed by Hau Nguyen, et al.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <div class="temp d-none">
+        <form id="languageForm" asp-controller="Language" asp-action="SetLanguage" method="post" style="display: none;">
+            <input type="hidden" name="culture" id="cultureInput" />
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+        </form>
+    </div>
+
+
+
+
+
+    <script src="~/lib/swiper/swiper-bundle.min.js"></script>
+    <script src="~/lib/scrollreveal.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+        $(".btnSubscribe").on('click', function () {
+            var ob = {
+                Email: $("#email-subs").val()
+            }
+            $.ajax({
+                url: '@Url.Action("Subscribe", "Contact")',
+                method: 'post',
+                data: ob,
+                success: function (res) {
+                    if (res.status) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Đăng ký thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: result.mess,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelector(".menu-bar").addEventListener('click', function () {
+            document.querySelector(".menu").classList.toggle("active");
+            document.querySelector(".menu-icon").classList.toggle("active");
+        });
+
+
+        $(document).ready(function () {
+            let span = $(".lang__active").find("span").html();
+            $(".language_navtitle").find("span").html(span);
+        });
+
+
+        $(".menu-item").on('click', function () {
+            $(this).toggleClass("active");
+        });
+
+       
+
+        $(document).on('scroll ready DOMContentLoaded', function () {
+            var header = document.getElementById('header');
+            if (window.scrollY > header.offsetHeight) {
+                header.classList.add('scroll');
+            } else {
+                header.classList.remove('scroll');
+            }
+
+
+            var elements = document.querySelectorAll('.scroll-animate,.scroll-animate-bottom,.scroll-animate-d2');
+            elements.forEach(function (element) {
+                var position = element.getBoundingClientRect();
+                if (position.top < window.innerHeight && position.bottom >= 0) {
+                    element.classList.add('scroll-animate-succeed');
+                }
+            });
+        });
+    </script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
