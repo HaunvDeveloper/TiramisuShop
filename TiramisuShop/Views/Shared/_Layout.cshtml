@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arima:wght@100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&display=swap" rel="stylesheet">
 
     @await RenderSectionAsync("Links", required: false)
 </head>
@@ -78,38 +81,57 @@
 
 
                 </div>
-
+                <div class="header-right">
+                    <a style="width:35px;" href="/">
+                        <img src="~/assets/images/user-solid-full.svg" alt="Logo">
+                    </a>
+                    <a style="width:35px;" href="/">
+                        <img src="~/assets/images/cart-shopping-solid-full.svg" alt="Logo">
+                    </a>
+                </div>
             </div>
         </header>
         <main id="main">
             @RenderBody()
         </main>
         <footer id="footer">
-            <div class="partners">
-                <div class="container">
-                    <div class="partner"><img src="/Data/Partners/mio.png" alt=""></div>
-                    <div class="partner"><img src="/Data/Partners/winmart.png" alt=""></div>
-                    <div class="partner"><img src="/Data/Partners/winmartplus.png" alt=""></div>
-                </div>
-            </div>
-            <div class="prefooter">
-                <div class="subscribe container">
-                    <div class="title">
-                        Đăng ký để nhận tin
-                    </div>
-                    <div class="form-subscribe">
-                        <input placeholder="Nhập địa chỉ email của bạn" type="email" name="Email" id="email-subs">
-                        <button class="btnSubscribe btn-highlight">
-                            <span></span><span></span><span></span><span></span>
-                            <div>ĐĂNG KÝ</div>
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div class="mainfooter">
-                <div class="logo container">
-                    <img src="~/assets/images/logomini.jpg" alt="Golifresh Logo">
-                    <h1>GoliFresh</h1>
+                <div class="px-md-5 mx-md-5 container row">
+                    <div class="col-md-5 d-block">
+                        <div class="mb-4">
+                            <div class="logo">
+                                <img src="~/assets/images/logomini.png" alt="Golifresh Logo">
+                                <h1>Cheese Cheese</h1>
+                            </div>
+                            <p>Chill cùng tiramisu chuẩn vị.</p>
+                        </div>
+                        <div class="mb-4">
+                            <h1>Thông tin liên hệ</h1>
+                            <p>Địa chỉ: 280, An Dương Vương, phường Chợ Quán, TP.HCM</p>
+                            <p>Hotline: 0944746748</p>
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-block">
+                        <div class="mb-4">
+                                <h1>Mạng xã hội</h1>
+                            <div class="d-flex gap-4 align-items-center">
+                                <a href="https://www.facebook.com/golifresh/" class="social-media">
+                                    <img src="~/assets/icons/facebook.png" alt="">
+                                </a>
+                                <a href="https://www.youtube.com/@@Goliexport" class="social-media">
+                                    <img src="~/assets/icons/youtube.png" alt="">
+                                </a>
+                                <a href="https://zalo.me/84941706750" class="social-media">
+                                    <img src="~/assets/icons/zalo.png" alt="Zalo" />
+                                </a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                @* <div class="logo container">
+                    <img src="~/assets/images/logomini.png" alt="Golifresh Logo">
+                    <h1>Cheese Cheese</h1>
                 </div>
                 <div class="container">
                     <div class="fintro">
@@ -154,25 +176,16 @@
                     <a href="https://zalo.me/84941706750" class="social-media">
                         <img src="~/assets/icons/zalo.png" alt="Zalo" />
                     </a>
-                </div>
+                </div> *@
             </div>
 
             <div class="endfooter">
                 <div class="container">
-                    Copyright © 2024 by Goods Link Joint Stock Company. All rights reserved. Designed and developed by Hau Nguyen, et al.
+                    © 2025 All rights reserved - Designed and developed by HMCoding.
                 </div>
             </div>
         </footer>
     </div>
-
-
-    <div class="temp d-none">
-        <form id="languageForm" asp-controller="Language" asp-action="SetLanguage" method="post" style="display: none;">
-            <input type="hidden" name="culture" id="cultureInput" />
-            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-        </form>
-    </div>
-
 
 
 
