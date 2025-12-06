@@ -1,0 +1,140 @@
+﻿@model IEnumerable<TiramisuShop.Models.Event>
+
+@{
+    ViewData["Title"] = "Sự kiện & Khuyến mãi";
+    var now = DateTime.Now;
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/event.css">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+
+<section id="content" style="background: #FCF5EF;">
+
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt="Event Banner"></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Sự kiện & Ưu đãi</h5>
+    </div>
+
+    <div class="section-events">
+        <div class="container">
+
+            <div class="section-header fade-up">
+                <h2 class="section-title">Tin tức mới nhất</h2>
+                <p class="section-desc">Đừng bỏ lỡ những chương trình khuyến mãi hấp dẫn và sự kiện đặc biệt từ chúng tôi.</p>
+                <img src="~/assets/images/divider-wheat.png" class="divider-img" alt="">
+            </div>
+
+            <div class="event-grid">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        // Xử lý trạng thái sự kiện
+                        string statusClass = "";
+                        string statusText = "";
+
+                        if (now < item.StartDate)
+                        {
+                            statusClass = "upcoming";
+                            statusText = "Sắp diễn ra";
+                        }
+                        else if (now >= item.StartDate && now <= item.EndDate)
+                        {
+                            statusClass = "active";
+                            statusText = "Đang diễn ra";
+                        }
+                        else
+                        {
+                            statusClass = "expired";
+                            statusText = "Đã kết thúc";
+                        }
+
+                        // Ảnh mặc định nếu null
+                        string imgUrl = !string.IsNullOrEmpty(item.ImageUrl) ? item.ImageUrl : "/assets/images/no-image.png";
+
+                        <div class="event-card fade-up delay-2">
+                            <div class="event-img-wrapper">
+                                <img src="@imgUrl" alt="@item.Title">
+
+                                @if (item.DiscountPercent > 0)
+                                {
+                                    <div class="discount-badge">
+                                        <span>Giảm</span>
+                                        <strong>@item.DiscountPercent%</strong>
+                                    </div>
+                                }
+
+                                <div class="status-badge @statusClass">@statusText</div>
+                            </div>
+
+                            <div class="event-body">
+                                <div class="event-date">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                    <span>@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</span>
+                                </div>
+
+                                <h3 class="event-title">
+                                    <a href="#">@item.Title</a>
+                                </h3>
+
+                                <p class="event-desc">@item.Description</p>
+
+                                <div class="event-footer">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn-event-detail">Xem chi tiết <i class="fa-solid fa-arrow-right-long"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-event">
+                        <p>Hiện chưa có sự kiện nào.</p>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Script Swiper Hero
+        var swiper = new Swiper(".introSwiper", {
+             spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true
+         });
+
+        // Script Tách chữ (Title Animation)
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.querySelector('.title-cheese');
+            if(textElement) {
+                const textContent = textElement.innerText;
+                textElement.innerHTML = '';
+                let accumulatedDelay = 1.5;
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += 0.4; }
+                    textElement.appendChild(span);
+                });
+            }
+
+            // Script Scroll Animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+}

@@ -1,4 +1,6 @@
 ﻿@using System.Globalization
+@using System.Security.Claims
+
 @{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var currentAction = ViewContext.RouteData.Values["action"].ToString();
@@ -20,9 +22,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Arima:wght@100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&display=swap" rel="stylesheet">
+
+
 
     @await RenderSectionAsync("Links", required: false)
 </head>
@@ -31,11 +36,6 @@
     <div id="app">
         <header id="header">
             <div class="container">
-                @* <div class="header-left">
-                    <a class="logo" href="/">
-                        <img src="~/assets/images/logo.png" alt="Logo">
-                    </a>
-                </div> *@
                 <div class="header-left">
                     <div class="menu-area">
                         <div class="menu-bar">
@@ -49,26 +49,16 @@
                             <ol>
                                 <li class="menu-item @(currentController == "Home" && currentAction == "Index" ? "active" : "")"><a asp-action="Index" asp-controller="Home">Home</a></li>
                                 <li class="menu-item @(currentController == "Home" && currentAction == "About" ? "active" : "")"><a asp-action="About" asp-controller="Home">About us</a></li>
-                                <li class="menu-item @(currentController == "Product" && currentAction == "Index" ? "active" : "")">
+                                <li class="menu-item @(currentController == "Product" ? "active" : "")">
                                     <a asp-action="Index" asp-controller="Product">
                                         Menu
                                     </a>
                                     <img class="angle" src="~/assets/icons/angle.svg" />
                                     <ol class="sub-menu">
-                                        @* @if (ViewBag.ProductTypes != null)
-                                        {
-                                            foreach (var productType in ViewBag.ProductTypes)
-                                            {
-                                                <li class="menu-item">
-                                                    <a href="@Url.Action("Index", "Product", new { type = productType.Code })">
-                                                        @productType.Name.Split("##EnVi##")[cul]
-                                                    </a>
-                                                </li>
-                                            }
-                                        } *@
+                                        
                                     </ol>
                                 </li>
-                                <li class="menu-item @(currentController == "News" && currentAction == "Index" ? "active" : "")"><a asp-action="Index" asp-controller="News">Events</a></li>
+                                <li class="menu-item @(currentController == "Event" ? "active" : "")"><a asp-action="Index" asp-controller="Event">Events</a></li>
                                 <li class="menu-item @(currentController == "Contact" && currentAction == "Index" ? "active" : "")">
                                     <a asp-action="Index" asp-controller="Contact">Contact</a>
                                 </li>
@@ -82,13 +72,50 @@
 
 
                 </div>
+
                 <div class="header-right">
-                    <a style="width:35px;" href="/">
-                        <img src="~/assets/images/user-solid-full.svg" alt="Logo">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        // Lấy tên hiển thị ngắn gọn
+                        var fullName = User.FindFirst("FullName")?.Value ?? User.Identity.Name;
+                        // Lấy chữ cái đầu để làm Avatar giả
+                        var firstLetter = !string.IsNullOrEmpty(fullName) ? fullName.Substring(0, 1).ToUpper() : "U";
+
+                        <div class="user-account-wrapper">
+                            <div class="user-trigger" onclick="toggleUserMenu()">
+                                <div class="user-avatar-circle">@firstLetter</div>
+                                <span class="user-name-label">@fullName</span>
+                                <i class="fa-solid fa-caret-down ms-1" style="font-size: 0.8rem;"></i>
+                            </div>
+
+                            <div class="user-dropdown-menu" id="userDropdown">
+                                <div class="dropdown-header">
+                                    <p class="mb-0">Xin chào,</p>
+                                    <strong>@fullName</strong>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item"><i class="fa-regular fa-user"></i> Hồ sơ của tôi</a>
+                                <a href="#" class="dropdown-item"><i class="fa-solid fa-list-check"></i> Đơn mua</a>
+                                <div class="dropdown-divider"></div>
+                                <a asp-controller="User" asp-action="Logout" class="dropdown-item text-danger">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login", "User")" class="login-btn-link">
+                            <i class="fa-regular fa-user"></i> <span>Đăng nhập</span>
+                        </a>
+                    }
+
+                    <a href="@Url.Action("Index", "Cart")" class="header-cart-btn">
+                        <img src="~/assets/images/cart-shopping-solid-full.svg" alt="Cart">
+                        @* <span class="cart-badge">0</span> *@
                     </a>
-                    <a style="width:35px;" href="/">
-                        <img src="~/assets/images/cart-shopping-solid-full.svg" alt="Logo">
-                    </a>
+
                 </div>
             </div>
         </header>
@@ -266,7 +293,27 @@
             });
         });
     </script>
+    <script>
+        // Hàm bật tắt menu
+        function toggleUserMenu() {
+            var menu = document.getElementById("userDropdown");
+            menu.classList.toggle("show");
+        }
 
+        // Sự kiện click ra ngoài để đóng menu
+        window.onclick = function(event) {
+            // Nếu click không phải vào nút trigger (hoặc con của nó)
+            if (!event.target.closest('.user-trigger')) {
+                var dropdowns = document.getElementsByClassName("user-dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

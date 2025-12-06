@@ -79,16 +79,206 @@ a {
         height: 100%;
     }
 
+    /* --- BẮT ĐẦU CODE MỚI CHO HEADER RIGHT --- */
     #header .header-right {
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
         align-items: center;
+        justify-content: flex-end;
         margin-left: auto;
-        width: fit-content;
         height: 100%;
-        gap: 2rem;
+        gap: 1.5rem; /* Khoảng cách giữa User và Cart */
+        position: relative;
     }
+
+/* 1. Nút User (Trigger) */
+.user-account-wrapper {
+    position: relative;
+}
+
+.user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    user-select: none;
+    border: 1px solid transparent;
+}
+
+    /* Hiệu ứng khi rê chuột vào vùng user */
+    .user-trigger:hover {
+        background-color: #FCF5EF; /* Màu kem nhạt */
+        border-color: rgba(75, 48, 34, 0.1);
+    }
+
+/* Avatar tròn */
+.user-avatar-circle {
+    width: 32px;
+    height: 32px;
+    background-color: #4B3022; /* Màu nâu chủ đạo */
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-family: 'Kanit', sans-serif;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Tên user */
+.user-name-label {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Nút Login (khi chưa đăng nhập) */
+.login-btn-link {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+    .login-btn-link:hover {
+        background-color: #4B3022;
+        color: #fff !important;
+    }
+
+/* 2. Menu Xổ Xuống (Dropdown) */
+.user-dropdown-menu {
+    display: none; /* Mặc định ẩn */
+    position: absolute;
+    top: 140%; /* Cách nút user một chút */
+    right: 0;
+    width: 220px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border: 1px solid #f0f0f0;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeInDrop 0.2s ease-out forwards;
+}
+
+    /* Class này sẽ được JS thêm vào để hiện menu */
+    .user-dropdown-menu.show {
+        display: block;
+    }
+
+.dropdown-header {
+    padding: 15px;
+    background-color: #FCF5EF; /* Nền kem header menu */
+    border-bottom: 1px solid #eee;
+    font-family: 'Kanit', sans-serif;
+    color: #4B3022;
+}
+
+    .dropdown-header p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .dropdown-header strong {
+        font-size: 1rem;
+    }
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 5px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #555 !important;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-family: 'Kanit', sans-serif;
+    transition: 0.2s;
+}
+
+    .dropdown-item:hover {
+        background-color: #f9f9f9;
+        color: #4B3022 !important;
+        padding-left: 25px; /* Hiệu ứng đẩy nhẹ sang phải */
+    }
+
+/* 3. Nút Giỏ Hàng */
+.header-cart-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+    .header-cart-btn:hover {
+        background-color: #FCF5EF;
+    }
+
+    .header-cart-btn img {
+        width: 24px;
+        height: 24px;
+    }
+
+/* Animation */
+@keyframes fadeInDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Thêm vào cuối file CSS */
+@media (max-width: 1100px) {
+    /* ... code cũ ... */
+
+    /* Ẩn tên user trên mobile, chỉ hiện avatar tròn */
+    .user-name-label {
+        display: none;
+    }
+
+    /* Ẩn mũi tên nhỏ trên mobile */
+    .user-trigger .fa-caret-down {
+        display: none;
+    }
+
+    #header .header-right {
+        gap: 10px; /* Thu nhỏ khoảng cách trên mobile */
+    }
+
+    .user-trigger {
+        padding: 5px; /* Thu gọn padding */
+    }
+}
+/* --- KẾT THÚC CODE MỚI --- */
 
 
 

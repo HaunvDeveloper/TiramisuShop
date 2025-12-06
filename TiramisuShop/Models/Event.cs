@@ -17,5 +17,9 @@ public partial class Event
 
     public DateTime EndDate { get; set; }
 
+    public string? ImageUrl { get; set; }
+
+    public string? Htmlcontent { get; set; }
+
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

@@ -1,0 +1,247 @@
+﻿/* --- BIẾN MÀU SẮC (Theme Cheese) --- */
+:root {
+    --bg-cream: #FCF5EF;
+    --brown-dark: #4B3022;
+    --brown-light: #8D6E63;
+    --gold: #FFD700;
+    --white: #ffffff;
+    --shadow-soft: 0 10px 30px rgba(75, 48, 34, 0.15);
+    --shadow-hover: 0 15px 35px rgba(75, 48, 34, 0.25);
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: 'Kanit', sans-serif;
+    min-height: 100vh;
+}
+
+/* Container căn giữa màn hình */
+.auth-container {
+    min-height: 85vh; /* Trừ đi header/footer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* --- CARD STYLE --- */
+.auth-card {
+    background: var(--white);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-soft);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px; /* Độ rộng tối đa cho Login */
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Animation xuất hiện */
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+    /* Riêng cho Register form rộng hơn chút */
+    .auth-card.register-mode {
+        max-width: 700px;
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Trang trí góc (Vệt màu) */
+    .auth-card::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        background: var(--gold);
+        border-radius: 50%;
+        opacity: 0.1;
+        z-index: 0;
+    }
+
+    .auth-card::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        right: -30px;
+        width: 100px;
+        height: 100px;
+        background: var(--brown-dark);
+        border-radius: 50%;
+        opacity: 0.05;
+        z-index: 0;
+    }
+
+/* Nội dung bên trong card */
+.auth-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- TYPOGRAPHY --- */
+.auth-title {
+    font-family: 'Pacifico', cursive;
+    color: var(--brown-dark);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* --- FORM ELEMENTS --- */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--brown-dark);
+    margin-left: 15px;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.95rem;
+}
+
+/* Input có icon bên trong */
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 20px 12px 50px; /* Padding trái lớn để né icon */
+    border-radius: 50px;
+    border: 2px solid #eee;
+    background-color: #fcfcfc;
+    font-size: 1rem;
+    color: var(--brown-dark);
+    transition: all 0.3s ease;
+    font-family: 'Kanit';
+}
+
+    .form-control:focus {
+        background-color: #fff;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.15);
+        outline: none;
+    }
+
+        .form-control:focus + .input-icon {
+            color: var(--brown-dark); /* Icon đổi màu khi focus */
+        }
+
+    .form-control::placeholder {
+        color: #ccc;
+        font-size: 0.9rem;
+    }
+
+/* Validation Error */
+.text-danger {
+    font-size: 0.8rem;
+    color: #ff6b81;
+    margin-left: 15px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* --- BUTTONS --- */
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    border: none;
+    background-color: var(--brown-dark);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(75, 48, 34, 0.2);
+    margin-top: 10px;
+}
+
+    .btn-auth:hover {
+        background-color: var(--brown-light);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(75, 48, 34, 0.3);
+        color: #fff;
+    }
+
+/* --- LINKS --- */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.auth-link {
+    color: var(--brown-light);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+    position: relative;
+}
+
+    .auth-link:hover {
+        color: var(--brown-dark);
+    }
+
+    .auth-link::after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--gold);
+        transition: width 0.3s;
+    }
+
+    .auth-link:hover::after {
+        width: 100%;
+    }
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+
+    .auth-title {
+        font-size: 2rem;
+    }
+}

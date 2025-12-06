@@ -21,6 +21,8 @@ public partial class TiramisuShopContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Contact> Contacts { get; set; }
+
     public virtual DbSet<Event> Events { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -65,9 +67,22 @@ public partial class TiramisuShopContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(255);
         });
 
+        modelBuilder.Entity<Contact>(entity =>
+        {
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Status).HasDefaultValue(0);
+            entity.Property(e => e.Subject).HasMaxLength(200);
+        });
+
         modelBuilder.Entity<Event>(entity =>
         {
             entity.Property(e => e.EndDate).HasColumnType("datetime");
+            entity.Property(e => e.Htmlcontent).HasColumnName("HTMLContent");
+            entity.Property(e => e.ImageUrl).HasMaxLength(50);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.Title).HasMaxLength(255);
         });

@@ -1,0 +1,187 @@
+﻿@model TiramisuShop.Models.Contact
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+
+<section id="content" style="background: #FCF5EF;">
+
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt="Contact Banner"></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Kết nối với chúng tôi</h5>
+    </div>
+
+    <div class="contact-section">
+        <div class="container">
+
+            <div class="contact-header fade-up">
+                <h2 class="c-title">Liên hệ</h2>
+                <p class="c-desc">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</p>
+                <img src="~/assets/images/divider-wheat.png" class="divider-img" alt="">
+            </div>
+
+            <div class="contact-wrapper">
+
+                <div class="contact-info fade-up delay-2">
+                    <h3 class="info-title">Thông tin cửa hàng</h3>
+
+                    <div class="info-item">
+                        <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="info-content">
+                            <h4>Địa chỉ</h4>
+                            <p>280, Đường An Dương Vương, Phường Chợ Quán, Thành phố Hồ Chí Minh</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+                        <div class="info-content">
+                            <h4>Hotline</h4>
+                            <p>0944 746 748</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="info-content">
+                            <h4>Email</h4>
+                            <p>haunv.cntt@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="icon-box"><i class="fa-regular fa-clock"></i></div>
+                        <div class="info-content">
+                            <h4>Giờ mở cửa</h4>
+                            <p>Thứ 2 - Thứ 6: 8:00 - 21:00</p>
+                            <p>Thứ 7 - CN: 8:30 - 22:00</p>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div class="contact-form-box fade-up delay-3">
+                    <h3 class="form-title">Gửi tin nhắn</h3>
+
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input asp-for="Name" class="form-control" placeholder="Tên của bạn" required />
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Email" class="form-control" placeholder="Email liên hệ" required />
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Subject" class="form-control" placeholder="Tiêu đề" />
+                        </div>
+
+                        <div class="form-group">
+                            <textarea asp-for="Message" class="form-control" rows="5" placeholder="Nội dung lời nhắn..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-send">
+                            Gửi ngay <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="map-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.650456668913!2d106.67960847451705!3d10.761399259471808!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1c757e3747%3A0x944bf92bf828603e!2zMjgwIEFuIETGsMahbmcgVsawxqFuZywgUGjGsOG7nW5nIDQsIFF14bqtbiA1LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1765012786470!5m2!1svi!2s"
+                        width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var swiperIntro = new Swiper(".introSwiper", {
+            spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Animation Title
+            const textElement = document.querySelector('.title-cheese');
+            if(textElement) {
+                const textContent = textElement.innerText; textElement.innerHTML = ''; let accumulatedDelay = 1.5;
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += 0.4; }
+                    textElement.appendChild(span);
+                });
+            }
+            // Scroll Animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+
+        // --- CODE MỚI: XỬ LÝ AJAX ---
+        $(document).ready(function() {
+            $('#contactForm').on('submit', function(e) {
+                e.preventDefault(); // Ngăn form reload trang
+
+                var formData = $(this).serialize(); // Lấy dữ liệu form
+                var btn = $('.btn-send');
+                var originalText = btn.html();
+
+                // Hiệu ứng loading nút
+                btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...').prop('disabled', true);
+
+                $.ajax({
+                    url: '/Contact/SendMessage', // Đường dẫn đến Action
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            // Thông báo thành công (SweetAlert2)
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonColor: '#4B3022',
+                                confirmButtonText: 'Tuyệt vời!'
+                            });
+
+                            $('#contactForm')[0].reset(); // Xóa trắng form
+                        } else {
+                            // Thông báo lỗi
+                            Swal.fire({
+                                title: 'Có lỗi!',
+                                text: 'Vui lòng kiểm tra lại thông tin nhập vào.',
+                                icon: 'error',
+                                confirmButtonColor: '#4B3022'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Lỗi hệ thống!',
+                            text: 'Không thể gửi tin nhắn lúc này. Vui lòng thử lại sau.',
+                            icon: 'error',
+                            confirmButtonColor: '#4B3022'
+                        });
+                    },
+                    complete: function() {
+                        // Trả lại trạng thái nút ban đầu
+                        btn.html(originalText).prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+}

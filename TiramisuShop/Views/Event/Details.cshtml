@@ -1,0 +1,151 @@
+﻿@model TiramisuShop.Models.Event
+@{
+    ViewData["Title"] = Model.Title;
+    var now = DateTime.Now;
+
+    // Xử lý trạng thái
+    string statusText = "";
+    string statusClass = "";
+    if (now < Model.StartDate) { statusText = "Sắp diễn ra"; statusClass = "upcoming"; }
+    else if (now >= Model.StartDate && now <= Model.EndDate) { statusText = "Đang diễn ra"; statusClass = "active"; }
+    else { statusText = "Đã kết thúc"; statusClass = "expired"; }
+
+    string bannerImg = !string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl : "/assets/images/Home.png";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/event.css">
+    <link rel="stylesheet" href="~/css/event-details.css">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+
+<section id="content" style="background: #FCF5EF;">
+
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt="Banner"></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Sự kiện & Ưu đãi</h5>
+    </div>
+
+    <div class="event-detail-section">
+        <div class="container">
+
+            <div class="e-breadcrumb fade-up">
+                <a href="/">Trang chủ</a> / <a href="/Event">Sự kiện</a> / <span>@Model.Title</span>
+            </div>
+
+            <div class="e-header fade-up delay-2">
+                <div class="e-meta">
+                    <span class="e-badge @statusClass">@statusText</span>
+                    <span class="e-date"><i class="fa-regular fa-calendar-days"></i> @Model.StartDate.ToString("dd/MM/yyyy") - @Model.EndDate.ToString("dd/MM/yyyy")</span>
+                </div>
+                <h1 class="e-title">@Model.Title</h1>
+
+                @if (Model.DiscountPercent > 0)
+                {
+                    <div class="e-discount-banner">
+                        <i class="fa-solid fa-gift"></i> Ưu đãi giảm giá lên đến <b>@Model.DiscountPercent%</b> cho các sản phẩm bên dưới!
+                    </div>
+                }
+            </div>
+
+            <div class="e-feature-image fade-up delay-3">
+                <img src="@bannerImg" alt="@Model.Title">
+            </div>
+
+            <div class="e-content fade-up delay-3">
+                <div class="content-wrapper">
+                    @if (!string.IsNullOrEmpty(Model.Htmlcontent))
+                    {
+                        @Html.Raw(Model.Htmlcontent)
+                    }
+                    else
+                    {
+                        <p>@Model.Description</p>
+                        <p style="text-align: center; font-style: italic; color: #888;">(Nội dung chi tiết đang được cập nhật...)</p>
+                    }
+                </div>
+            </div>
+
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="e-products fade-up">
+                    <div class="divider-section">
+                        <img src="~/assets/images/divider-wheat.png" alt="divider">
+                    </div>
+                    <h2 class="e-subtitle">Sản phẩm áp dụng ưu đãi</h2>
+
+                    <div class="product-grid">
+                        @foreach (var item in Model.Products)
+                        {
+                            var pImg = item.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+                            <div class="product-card" data-category="@item.CategoryId">
+                                <div class="card-badge" style="background: #ff6b81; color: white;">-@Model.DiscountPercent%</div>
+                                <div class="card-img-wrapper">
+                                    <img src="@pImg" alt="@item.Name">
+                                    <div class="overlay-actions">
+                                        <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn-quick-view"><i class="fa-regular fa-eye"></i></a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="product-name">@item.Name</h3>
+                                    <div class="price-row">
+                                        <div class="price-group">
+                                            <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">@item.Price.ToString("N0") đ</span>
+                                            @{
+                                                var discountedPrice = item.Price * (decimal)(1 - Model.DiscountPercent / 100);
+                                            }
+                                            <span class="price" style="color: #ff6b81;">@discountedPrice.ToString("N0") đ</span>
+                                        </div>
+                                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                            <input type="hidden" name="productId" value="@item.Id" />
+                                            <button type="submit" class="btn-add-cart"><i class="fa-solid fa-cart-plus"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="text-center mt-5 mb-5">
+                <a href="/Event" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách sự kiện</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Swiper Hero
+        var swiperIntro = new Swiper(".introSwiper", {
+            spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true
+        });
+
+        // Animation Title
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.querySelector('.title-cheese');
+            if(textElement) {
+                const textContent = textElement.innerText; textElement.innerHTML = ''; let accumulatedDelay = 1.5;
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += 0.4; }
+                    textElement.appendChild(span);
+                });
+            }
+            // Scroll Animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+}

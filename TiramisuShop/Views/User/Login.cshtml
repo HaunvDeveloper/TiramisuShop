@@ -1,0 +1,57 @@
+﻿@model TiramisuShop.ViewModels.LoginVM
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+@section Links {
+    <link href="~/css/login.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+<div style="height:100px;"></div>
+<div class="auth-container mt-4">
+    <div class="auth-card">
+        <div class="auth-content">
+            <h2 class="auth-title">Chào mừng trở lại!</h2>
+            <p class="auth-subtitle">Đăng nhập để thưởng thức vị ngọt ngào.</p>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success text-center mb-4" style="border-radius: 15px; background: #e8f5e9; color: #2e7d32; border: none;">
+                    <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+                <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+                
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <div class="input-wrapper">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" />
+                        <i class="fa-solid fa-lock input-icon"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+                <button type="submit" class="btn-auth">
+                    Đăng nhập <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Bạn chưa có tài khoản? <a asp-action="Register" class="auth-link">Đăng ký ngay</a></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+﻿@model TiramisuShop.ViewModels.RegisterVM
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+@section Links {
+    <link href="~/css/login.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+<div style="height:100px;"></div>
+<div class="auth-container mt-4">
+    <div class="auth-card register-mode">
+        <div class="auth-content">
+            <h2 class="auth-title">Đăng ký thành viên</h2>
+            <p class="auth-subtitle">Trở thành thành viên của Cheese Cheese ngay hôm nay.</p>
+
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Họ</label>
+                            <div class="input-wrapper">
+                                <input asp-for="FirstName" class="form-control" placeholder="Nguyễn" />
+                                <i class="fa-regular fa-user input-icon"></i>
+                            </div>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Tên</label>
+                            <div class="input-wrapper">
+                                <input asp-for="LastName" class="form-control" placeholder="Văn A" />
+                                <i class="fa-regular fa-user input-icon"></i>
+                            </div>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <div class="input-wrapper">
+                                <input asp-for="Email" class="form-control" placeholder="email@domain.com" />
+                                <i class="fa-regular fa-envelope input-icon"></i>
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Số điện thoại</label>
+                            <div class="input-wrapper">
+                                <input asp-for="Phone" class="form-control" placeholder="0909..." />
+                                <i class="fa-solid fa-mobile-screen input-icon"></i>
+                            </div>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu</label>
+                            <div class="input-wrapper">
+                                <input asp-for="Password" type="password" class="form-control" placeholder="••••••" />
+                                <i class="fa-solid fa-lock input-icon"></i>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Xác nhận mật khẩu</label>
+                            <div class="input-wrapper">
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="••••••" />
+                                <i class="fa-solid fa-check-double input-icon"></i>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    Tạo tài khoản <i class="fa-solid fa-user-plus ms-2"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Bạn đã có tài khoản? <a asp-action="Login" class="auth-link">Đăng nhập ngay</a></p>
+            </div>
+        </div>
+    </div>
+</div>

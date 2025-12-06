@@ -49,8 +49,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options =>
     {
-        options.LoginPath = "/Admin/User/Login";
+        options.LoginPath = "/User/Login";
         options.AccessDeniedPath = "/";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
     });
 
 // Add Session
