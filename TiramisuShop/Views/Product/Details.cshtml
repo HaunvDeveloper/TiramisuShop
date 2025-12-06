@@ -102,10 +102,15 @@
 
                 <div class="col-info fade-up">
                     <div class="badges-wrapper">
-                        @if (isSale)
+                        @if (Model.Stock <= 0)
+                        {
+                            <span class="badge" style="background: #7f8c8d; color: white;">Hết hàng</span>
+                        }
+                        else if (isSale)
                         {
                             <span class="badge sale">Sale Off</span>
                         }
+
                         @if (Model.IsHot)
                         {
                             <span class="badge hot">Best Seller</span>
@@ -150,9 +155,18 @@
                             <button type="button" class="qty-btn plus"><i class="fa-solid fa-plus"></i></button>
                         </div>
 
-                        <button type="button" id="btnAddToCart" class="btn-add-to-cart" style="background-color: @mainColor">
-                            <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-                        </button>
+                        @if (Model.Stock > 0)
+                        {
+                            <button type="button" id="btnAddToCart" class="btn-add-to-cart" style="background-color: @mainColor">
+                                <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn-add-to-cart disabled" disabled style="background-color: #ccc; cursor: not-allowed;">
+                                <i class="fa-solid fa-ban"></i> Tạm hết hàng
+                            </button>
+                        }
                     </div>
 
                     <div class="p-meta">
@@ -367,6 +381,7 @@
                         btnAdd.disabled = false;
 
                         if(data.success) {
+                            updateCartBadge();
                             // Cập nhật số lượng trên icon giỏ hàng (nếu có class .cart-badge)
                             const cartBadge = document.querySelector('.cart-badge');
                             if(cartBadge && data.cartCount) cartBadge.innerText = data.cartCount;
@@ -511,6 +526,7 @@
 
                             // Xóa form
                             $('#reviewForm')[0].reset();
+                            updateCartBadge();
                         } else {
                             Swal.fire({
                                 icon: 'error',

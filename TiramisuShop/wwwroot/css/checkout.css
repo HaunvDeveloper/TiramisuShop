@@ -1,0 +1,252 @@
+﻿:root {
+    --bg-cream: #FCF5EF;
+    --brown-dark: #4B3022;
+    --gold: #FFD700;
+}
+
+.checkout-wrapper {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+/* CỘT TRÁI */
+.col-info {
+    flex: 1.5;
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.section-title {
+    font-family: "Pacifico", cursive;
+    color: var(--brown-dark);
+    font-size: 2rem;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+        color: #555;
+    }
+
+.form-control, .form-select {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 50px; /* Pill input */
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    font-family: "Kanit";
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--gold);
+        outline: none;
+        background: #fff;
+    }
+
+/* Grid địa chỉ 3 cột */
+.address-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-option {
+    cursor: pointer;
+}
+
+    .payment-option input {
+        display: none;
+    }
+    /* Ẩn radio mặc định */
+    .payment-option .p-content {
+        display: block;
+        padding: 15px;
+        border: 2px solid #eee;
+        border-radius: 15px;
+        font-weight: 500;
+        transition: 0.3s;
+        color: #555;
+    }
+
+    .payment-option input:checked + .p-content {
+        border-color: var(--brown-dark);
+        background-color: rgba(75, 48, 34, 0.05);
+        color: var(--brown-dark);
+    }
+
+    .payment-option i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+
+/* CỘT PHẢI (SUMMARY) */
+.col-summary {
+    flex: 1;
+    min-width: 350px;
+}
+
+.summary-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 100px;
+}
+
+.summary-title {
+    font-family: "Kanit";
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.order-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.item-img {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+    .item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+.item-qty {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--brown-dark);
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.i-name {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.i-cat {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.item-price {
+    font-weight: 700;
+    color: var(--brown-dark);
+}
+
+.price-summary .row-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.row-price.total {
+    border-top: 1px dashed #ddd;
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+}
+
+.btn-confirm-order {
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 50px;
+    background: var(--brown-dark);
+    color: #fff;
+    font-family: "Kanit";
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+    .btn-confirm-order:hover {
+        background: var(--gold);
+        color: var(--brown-dark);
+    }
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+    .back-link:hover {
+        color: var(--brown-dark);
+        text-decoration: underline;
+    }
+
+.text-danger {
+    font-size: 0.8rem;
+    margin-left: 15px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .checkout-wrapper {
+        flex-direction: column;
+    }
+
+    .address-group {
+        grid-template-columns: 1fr;
+    }
+}

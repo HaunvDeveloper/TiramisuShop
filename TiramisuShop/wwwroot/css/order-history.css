@@ -1,0 +1,551 @@
+﻿/* --- VARIABLES --- */
+:root {
+    --bg-cream: #FCF5EF;
+    --brown-dark: #4B3022;
+    --brown-light: #8D6E63;
+    --gold: #FFD700;
+    --white: #ffffff;
+    /* Màu trạng thái */
+    --status-pending: #f39c12; /* Cam */
+    --status-shipping: #3498db; /* Xanh dương */
+    --status-completed: #27ae60; /* Xanh lá */
+    --status-cancelled: #e74c3c; /* Đỏ */
+}
+
+/* REUSE HEADER HERO */
+#intro-picture {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.introSwiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9);
+}
+
+.title-cheese {
+    text-wrap: nowrap;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
+    font-size: clamp(40px, 7vw, 100px);
+    color: white;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards 0.5s;
+    display: flex;
+    gap: 0;
+}
+
+    .title-cheese span {
+        display: inline-block;
+        text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        animation: jumpDiscrete 6s ease-in-out infinite;
+    }
+
+    .title-cheese:after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 4px;
+        width: 60%;
+        background: var(--gold);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        animation: expandLine 1s ease-out forwards 1.2s;
+    }
+
+.subtitle-cheese {
+    font-family: "Pacifico", cursive;
+    font-weight: bold;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    z-index: 100;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-size: clamp(18px, 2vw, 30px);
+    width: 100%;
+    text-align: center;
+    animation: subtitleAppear 1s ease-out forwards 1.8s;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -30%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes expandLine {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 60%;
+    }
+}
+
+@keyframes jumpDiscrete {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    2% {
+        transform: translateY(-20px);
+        color: var(--gold);
+    }
+
+    4% {
+        transform: translateY(0);
+        color: white;
+    }
+}
+
+@keyframes subtitleAppear {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* --- HISTORY MAIN --- */
+.history-section {
+    padding: 80px 0;
+    background-color: var(--bg-cream);
+    min-height: 800px;
+}
+
+    .history-section .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+.history-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.h-title {
+    font-family: "Allura", cursive;
+    font-size: 5rem;
+    color: var(--brown-dark);
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+.h-desc {
+    font-family: "Kanit", sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.divider-img {
+    height: 30px;
+    opacity: 0.6;
+}
+
+/* ORDER CARD */
+.order-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+    .order-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(75, 48, 34, 0.1);
+    }
+
+/* Header Card */
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.o-info {
+    font-family: "Kanit";
+    color: #555;
+}
+
+.o-id {
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-right: 15px;
+    font-size: 1.1rem;
+}
+
+.o-date {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.o-status {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: "Kanit";
+    color: #fff;
+}
+
+    .o-status.pending {
+        background: var(--status-pending);
+    }
+
+    .o-status.shipping {
+        background: var(--status-shipping);
+    }
+
+    .o-status.completed {
+        background: var(--status-completed);
+    }
+
+    .o-status.cancelled {
+        background: var(--status-cancelled);
+    }
+
+/* Items List */
+.o-items {
+    margin-bottom: 20px;
+}
+
+.o-item-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.item-thumb {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+    .item-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+.item-qty {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: var(--brown-light);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-name {
+    font-family: "Kanit";
+    font-weight: 500;
+    color: var(--brown-dark);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+    .item-name:hover {
+        color: var(--gold);
+    }
+
+.item-price {
+    font-family: "Kanit";
+    font-weight: 600;
+    color: #333;
+}
+
+/* Footer Card */
+.card-footer-row {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.o-address {
+    font-size: 0.9rem;
+    color: #666;
+    font-family: "Kanit";
+    max-width: 60%;
+}
+
+    .o-address i {
+        color: var(--brown-light);
+        margin-right: 5px;
+    }
+
+.o-total {
+    font-family: "Kanit";
+    color: var(--brown-dark);
+}
+
+    .o-total span {
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    .o-total strong {
+        font-size: 1.3rem;
+        color: var(--status-completed);
+    }
+/* Tiền màu xanh */
+
+/* Actions */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.payment-method {
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+    font-family: "Kanit";
+}
+
+.btn-reorder {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 1px solid var(--brown-dark);
+    color: var(--brown-dark);
+    border-radius: 30px;
+    text-decoration: none;
+    font-family: "Kanit";
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .btn-reorder:hover {
+        background: var(--brown-dark);
+        color: #fff;
+    }
+
+/* Empty State */
+.empty-history {
+    padding: 50px 0;
+}
+
+    .empty-history p {
+        font-family: "Kanit";
+        color: #666;
+        margin: 20px 0;
+        font-size: 1.1rem;
+    }
+
+.btn-go-shop {
+    display: inline-block;
+    padding: 10px 30px;
+    background: var(--gold);
+    color: var(--brown-dark);
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: "Kanit";
+    transition: 0.3s;
+}
+
+    .btn-go-shop:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
+/* Animation Utils */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+    .fade-up.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.delay-2 {
+    transition-delay: 0.2s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .h-title {
+        font-size: 3.5rem;
+    }
+
+    .card-footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .o-address {
+        max-width: 100%;
+    }
+
+    .item-details {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* --- ITEMS LIST (CẬP NHẬT) --- */
+.o-items {
+    margin-bottom: 20px;
+    background-color: #fcfcfc; /* Nền nhạt cho vùng danh sách món */
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.o-item-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+    .o-item-row:last-child {
+        border-bottom: none;
+    }
+
+/* Ảnh món ăn */
+.item-thumb {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+}
+
+    .item-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid #eee;
+    }
+
+/* Khung chứa thông tin */
+.item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between; /* Đẩy giá sang phải */
+    align-items: center;
+}
+
+/* Cột trái: Tên & Công thức */
+.detail-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.item-name {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    color: var(--brown-dark);
+    text-decoration: none;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+    .item-name:hover {
+        color: var(--gold);
+    }
+
+.item-calculation {
+    font-family: "Kanit", sans-serif;
+    font-size: 0.9rem;
+    color: #666;
+    background: #eee;
+    padding: 2px 10px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+    .item-calculation .multiply {
+        color: #999;
+        font-size: 0.8rem;
+        margin: 0 5px;
+    }
+
+    .item-calculation .qty {
+        font-weight: bold;
+        color: var(--brown-dark);
+    }
+
+/* Cột phải: Thành tiền */
+.detail-right {
+    text-align: right;
+}
+
+.line-total {
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    color: var(--brown-dark);
+    font-size: 1.1rem;
+}
+
+/* Responsive Mobile */
+@media (max-width: 576px) {
+    .item-details {
+        flex-direction: column; /* Xuống dòng trên điện thoại */
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .detail-right {
+        width: 100%;
+        text-align: left; /* Căn trái giá tiền trên mobile */
+    }
+
+    .line-total {
+        color: var(--status-completed); /* Đổi màu giá tiền trên mobile cho dễ thấy */
+    }
+}

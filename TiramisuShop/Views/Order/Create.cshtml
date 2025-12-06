@@ -1,0 +1,204 @@
+﻿@model TiramisuShop.ViewModels.CheckoutVM
+@{
+    ViewData["Title"] = "Thanh toán";
+    string itemIds = string.Join(",", Model.CheckoutItems.Select(x => x.Id));
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/checkout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container .select2-selection--single {
+            height: 50px !important;
+            border-radius: 50px !important;
+            border: 1px solid #ddd !important;
+            background-color: #f9f9f9 !important;
+            padding: 10px 20px !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 50% !important;
+            transform: translateY(-50%);
+            right: 15px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #4B3022 !important;
+            font-family: "Kanit";
+            padding-left: 0;
+        }
+
+        .select2-dropdown {
+            border-radius: 20px !important;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+
+        .select2-search__field {
+            border-radius: 20px !important;
+            padding: 5px 15px !important;
+            font-family: "Kanit";
+        }
+    </style>
+}
+
+<section id="content" style="background: #FCF5EF; padding-top: 80px; min-height: 100vh;">
+    <div class="container pb-5 mt-5">
+
+        <form asp-action="Create" method="post" id="checkoutForm">
+            <input type="hidden" name="itemIds" value="@itemIds" />
+
+            <input type="hidden" asp-for="ProvinceName" id="ProvinceName" />
+            <input type="hidden" asp-for="WardName" id="WardName" />
+
+            <div class="checkout-wrapper fade-up">
+
+                <div class="col-info">
+                    <h2 class="section-title">Thông tin giao hàng</h2>
+
+                    <div class="form-group">
+                        <label>Họ và tên người nhận</label>
+                        <input asp-for="ReceiverName" class="form-control" placeholder="Nguyễn Văn A" />
+                        <span asp-validation-for="ReceiverName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input asp-for="ReceiverPhone" class="form-control" placeholder="09xx..." />
+                        <span asp-validation-for="ReceiverPhone" class="text-danger"></span>
+                    </div>
+
+                    <div class="address-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Tỉnh / Thành phố</label>
+                            <select asp-for="ProvinceId" class="form-control select2-box" id="province">
+                                <option value="">-- Chọn Tỉnh/Thành --</option>
+                            </select>
+                            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Xã / Phường</label>
+                            <select asp-for="WardId" class="form-control select2-box" id="ward" disabled>
+                                <option value="">-- Chọn Xã/Phường --</option>
+                            </select>
+                            <span asp-validation-for="WardId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Địa chỉ cụ thể (Số nhà, Tên đường)</label>
+                        <input asp-for="SpecificAddress" class="form-control" placeholder="Ví dụ: 123 Đường ABC..." />
+                        <span asp-validation-for="SpecificAddress" class="text-danger"></span>
+                    </div>
+
+                    <h3 class="section-subtitle mt-4">Phương thức thanh toán</h3>
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" asp-for="PaymentMethod" value="COD" checked />
+                            <span class="p-content"><i class="fa-solid fa-money-bill-wave"></i> Thanh toán khi nhận hàng (COD)</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" asp-for="PaymentMethod" value="Banking" />
+                            <span class="p-content"><i class="fa-solid fa-building-columns"></i> Chuyển khoản ngân hàng</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-summary">
+                    <div class="summary-box">
+                        <h3 class="summary-title">Đơn hàng của bạn</h3>
+                        <div class="order-list">
+                            @foreach (var item in Model.CheckoutItems)
+                            {
+                                var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+                                <div class="order-item">
+                                    <div class="item-img">
+                                        <img src="@img" alt="@item.Product.Name">
+                                        <span class="item-qty">@item.Quantity</span>
+                                    </div>
+                                    <div class="item-info">
+                                        <p class="i-name">@item.Product.Name</p>
+                                        <p class="i-cat">@item.Product.Category?.Name</p>
+                                    </div>
+                                    <div class="item-price">
+                                        @((item.Product.Price * item.Quantity).ToString("N0")) đ
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="price-summary">
+                            <div class="row-price"><span>Tạm tính</span><span>@Model.TotalAmount.ToString("N0") đ</span></div>
+                            <div class="row-price"><span>Phí vận chuyển</span><span>20.000 đ</span></div>
+                            <div class="row-price total"><span>Tổng cộng</span><span class="final-price">@((Model.TotalAmount + 20000).ToString("N0")) đ</span></div>
+                        </div>
+                        <button type="submit" class="btn-confirm-order">Đặt hàng ngay <i class="fa-solid fa-check"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 1. Kích hoạt Select2
+            $('.select2-box').select2({ width: '100%', placeholder: "Vui lòng chọn...", language: { noResults: () => "Không tìm thấy kết quả" } });
+
+            // 2. URL API mới
+            const apiUrl = "https://provinces.open-api.vn/api/v2/?depth=2";
+            var provincesData = [];
+
+            // 3. Tải dữ liệu Tỉnh
+            $.getJSON(apiUrl, function (data) {
+                provincesData = data;
+                var options = '<option value="">-- Chọn Tỉnh/Thành --</option>';
+                $.each(data, function (key, val) {
+                    options += `<option value="${val.code}" data-name="${val.name}">${val.name}</option>`;
+                });
+                $("#province").html(options);
+            });
+
+            // 4. Khi chọn Tỉnh -> Load Xã/Phường (Từ mảng wards trong JSON)
+            $('#province').on('select2:select', function (e) {
+                var provinceCode = $(this).val();
+                var provinceName = $(this).find(':selected').text();
+                $("#ProvinceName").val(provinceName); // Lưu tên Tỉnh
+
+                // Reset ô Xã
+                var wardSelect = $('#ward');
+                wardSelect.empty().append('<option value="">-- Chọn Xã/Phường --</option>').trigger('change');
+                wardSelect.prop("disabled", true);
+
+                if (provinceCode) {
+                    // Tìm tỉnh trong mảng dữ liệu
+                    // Lưu ý: JSON bạn đưa `code` là số, nhưng value select là chuỗi, nên dùng == để so sánh
+                    var selectedProvince = provincesData.find(p => p.code == provinceCode);
+
+                    // JSON bạn cung cấp: Tỉnh chứa trực tiếp mảng "wards"
+                    if (selectedProvince && selectedProvince.wards) {
+                        $.each(selectedProvince.wards, function (key, val) {
+                            var option = new Option(val.name, val.code, false, false);
+                            $(option).attr('data-name', val.name);
+                            wardSelect.append(option);
+                        });
+                        wardSelect.prop("disabled", false);
+                    }
+                }
+            });
+
+            // 5. Khi chọn Xã -> Lưu tên Xã
+            $('#ward').on('select2:select', function (e) {
+                var wardName = $(this).find(':selected').text();
+                $("#WardName").val(wardName);
+            });
+        });
+    </script>
+}

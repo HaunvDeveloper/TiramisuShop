@@ -50,8 +50,17 @@
                         var nameColor = !string.IsNullOrEmpty(item.HexColor) ? item.HexColor : "#4B3022";
                         bool isSale = item.EventId != null;
 
-                        <div class="product-card" data-category="@item.CategoryId">
-                            @if (isSale)
+                        // --- KIỂM TRA HẾT HÀNG ---
+                        bool isSoldOut = item.Stock <= 0;
+                        string soldOutClass = isSoldOut ? "sold-out" : ""; // Class CSS để làm mờ
+
+                        <div class="product-card @soldOutClass" data-category="@item.CategoryId">
+
+                            @if (isSoldOut)
+                            {
+                                <div class="card-badge" style="background: #7f8c8d; color: white;">Hết hàng</div>
+                            }
+                            else if (isSale)
                             {
                                 <div class="card-badge" style="background: #ff6b81; color: white;">Sale</div>
                             }
@@ -76,12 +85,22 @@
                             <div class="card-body">
                                 <h3 class="product-name" style="color: @nameColor;">@item.Name</h3>
                                 <p class="product-desc">@item.Description</p>
+
                                 <div class="price-row">
                                     <span class="price">@item.Price.ToString("N0") đ</span>
 
-                                    <button type="button" class="btn-add-cart add-to-cart-btn" data-id="@item.Id" title="Thêm vào giỏ">
-                                        <i class="fa-solid fa-cart-plus"></i>
-                                    </button>
+                                    @if (isSoldOut)
+                                    {
+                                        <button type="button" class="btn-add-cart disabled" disabled title="Hết hàng">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn-add-cart add-to-cart-btn" data-id="@item.Id" title="Thêm vào giỏ">
+                                            <i class="fa-solid fa-cart-plus"></i>
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -90,7 +109,7 @@
                 else
                 {
                     <div class="col-12 text-center">
-                        <p style="font-family: 'Kanit'; font-size: 1.2rem; color: #666;">Hiện chưa có sản phẩm nào.</p>
+                        <p>Hiện chưa có sản phẩm nào.</p>
                     </div>
                 }
             </div>

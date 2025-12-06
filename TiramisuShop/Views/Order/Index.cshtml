@@ -1,0 +1,143 @@
+﻿@model IEnumerable<TiramisuShop.Models.Order>
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/order-history.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+}
+
+<section id="content" style="background: #FCF5EF;">
+
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt="History Banner"></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Đơn hàng của tôi</h5>
+    </div>
+
+    <div class="history-section">
+        <div class="container">
+
+            <div class="history-header fade-up">
+                <h2 class="h-title">Lịch sử đặt hàng</h2>
+                <p class="h-desc">Theo dõi hành trình những chiếc bánh ngọt ngào đến tay bạn.</p>
+                <img src="~/assets/images/divider-wheat.png" class="divider-img" alt="">
+            </div>
+
+            <div class="order-list fade-up delay-2">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var order in Model)
+                    {
+                        // Xử lý màu sắc trạng thái
+                        string statusClass = "pending";
+                        string statusLabel = order.Status;
+
+                        if (order.Status == "Pending") { statusClass = "pending"; statusLabel = "Chờ xử lý"; }
+                        else if (order.Status == "Shipping") { statusClass = "shipping"; statusLabel = "Đang giao"; }
+                        else if (order.Status == "Completed") { statusClass = "completed"; statusLabel = "Hoàn thành"; }
+                        else if (order.Status == "Cancelled") { statusClass = "cancelled"; statusLabel = "Đã hủy"; }
+
+                        <div class="order-card">
+                            <div class="card-header-row">
+                                <div class="o-info">
+                                    <span class="o-id">#@order.Id</span>
+                                    <span class="o-date"><i class="fa-regular fa-clock"></i> @order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                </div>
+                                <div class="o-status @statusClass">@statusLabel</div>
+                            </div>
+
+                            <div class="o-items">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+                                    // Tính thành tiền của từng dòng (Line Total)
+                                    var lineTotal = item.Price * item.Quantity;
+
+                                    <div class="o-item-row">
+                                        <div class="item-thumb">
+                                            <img src="@img" alt="@item.Product.Name">
+                                        </div>
+
+                                        <div class="item-details">
+
+                                            <div class="detail-left">
+                                                <a href="/Product/Details/@item.ProductId" class="item-name">@item.Product.Name</a>
+                                                <div class="item-calculation">
+                                                    <span class="unit-price">@item.Price.ToString("N0") đ</span>
+                                                    <span class="multiply">x</span>
+                                                    <span class="qty">@item.Quantity</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="detail-right">
+                                                <span class="line-total">@lineTotal.ToString("N0") đ</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="card-footer-row">
+                                <div class="o-address">
+                                    <i class="fa-solid fa-location-dot"></i> @order.Address
+                                </div>
+                                <div class="o-total">
+                                    <span>Tổng tiền:</span>
+                                    <strong>@((order.TotalAmount + 20000).ToString("N0")) đ</strong>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                @if (order.Status == "Completed")
+                                {
+                                    <a href="/Product" class="btn-reorder">Mua lại</a>
+                                }
+                                <span class="payment-method">Thanh toán: @(order.PaymentMethod == "COD" ? "Tiền mặt" : "Chuyển khoản")</span>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-history text-center">
+                        <img src="~/assets/images/empty-cart.png" alt="Empty" style="width: 150px; opacity: 0.7;">
+                        <p>Bạn chưa có đơn hàng nào.</p>
+                        <a href="/Product" class="btn-go-shop">Đặt món ngay</a>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var swiperIntro = new Swiper(".introSwiper", { spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Animation Title
+            const textElement = document.querySelector('.title-cheese');
+            if(textElement) {
+                const textContent = textElement.innerText; textElement.innerHTML = ''; let accumulatedDelay = 1.5;
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += 0.4; }
+                    textElement.appendChild(span);
+                });
+            }
+            // Scroll Animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+}

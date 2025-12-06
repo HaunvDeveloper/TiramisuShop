@@ -469,3 +469,31 @@
         font-size: 0.9rem;
     }
 }
+/* --- STYLE CHO SẢN PHẨM HẾT HÀNG --- */
+
+/* Làm mờ toàn bộ card */
+.product-card.sold-out {
+    opacity: 0.7; /* Mờ đi */
+    filter: grayscale(0.5); /* Xám đi một chút */
+    pointer-events: none; /* Không cho click vào card (Tùy chọn) */
+}
+
+    /* Nhưng vẫn cho phép click vào nút "Xem chi tiết" để xem thông tin */
+    .product-card.sold-out .overlay-actions,
+    .product-card.sold-out .btn-quick-view {
+        pointer-events: auto;
+    }
+
+/* Nút hết hàng (Disable) */
+.btn-add-cart.disabled {
+    background-color: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+}
+
+    .btn-add-cart.disabled:hover {
+        background-color: #e0e0e0; /* Không đổi màu khi hover */
+        color: #999;
+        transform: none; /* Không nảy lên */
+    }
