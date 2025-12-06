@@ -46,17 +46,41 @@
                                     @foreach (var item in Model.CartItems)
                                     {
                                         var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
-                                        var itemTotal = item.Quantity * item.Product.Price;
+
+                                        // --- LOGIC TÍNH GIÁ ---
+                                        var now = DateTime.Now;
+                                        decimal originalPrice = item.Product.Price;
+                                        decimal finalPrice = originalPrice;
+                                        bool hasDiscount = false;
+                                        double discountPercent = 0;
+
+                                        if (item.Product.Event != null && now >= item.Product.Event.StartDate && now <= item.Product.Event.EndDate)
+                                        {
+                                            hasDiscount = true;
+                                            discountPercent = item.Product.Event.DiscountPercent;
+                                            finalPrice = originalPrice * (decimal)((100 - discountPercent) / 100);
+                                        }
+
+                                        var itemTotal = item.Quantity * finalPrice; // Tính tổng dựa trên giá cuối
+                                                                                    // ----------------------
 
                                         <tr id="row-@item.Id">
                                             <td>
                                                 <input type="checkbox" name="selectedItems" value="@item.Id" class="item-checkbox"
-                                                       data-price="@item.Product.Price" data-id="@item.Id" />
+                                                       data-price="@finalPrice" data-id="@item.Id" />
                                             </td>
 
                                             <td>
                                                 <div class="cart-product-info">
-                                                    <img src="@img" alt="@item.Product.Name">
+                                                    <div style="position: relative;">
+                                                        <img src="@img" alt="@item.Product.Name">
+                                                        @if (hasDiscount)
+                                                        {
+                                                            <span style="position: absolute; top: -5px; left: -5px; background: #ff6b81; color: white; font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; font-weight: bold;">
+                                                                -@discountPercent%
+                                                            </span>
+                                                        }
+                                                    </div>
                                                     <div>
                                                         <a href="/Product/Details/@item.ProductId" class="p-name">@item.Product.Name</a>
                                                         <p class="p-cat">@item.Product.Category?.Name</p>
@@ -64,8 +88,22 @@
                                                 </div>
                                             </td>
 
-                                            <td class="p-price" data-value="@item.Product.Price">
-                                                @item.Product.Price.ToString("N0") đ
+                                            <td class="p-price" data-value="@finalPrice">
+                                                @if (hasDiscount)
+                                                {
+                                                    <div style="display: flex; flex-direction: column;">
+                                                        <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">
+                                                            @originalPrice.ToString("N0") đ
+                                                        </span>
+                                                        <span style="color: #ff6b81;">
+                                                            @finalPrice.ToString("N0") đ
+                                                        </span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <span>@originalPrice.ToString("N0") đ</span>
+                                                }
                                             </td>
 
                                             <td>

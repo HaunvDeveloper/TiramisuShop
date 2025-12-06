@@ -1,0 +1,123 @@
+﻿@model TiramisuShop.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+    Layout = null; // Hoặc dùng Layout Admin nếu có
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/admin/admin-form.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Thêm món mới</h2>
+            <a href="/admin/product" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="main-form">
+            <div class="form-grid">
+
+                <div class="col-left">
+                    <div class="form-group">
+                        <label>Tên sản phẩm</label>
+                        <input asp-for="Name" class="form-control" placeholder="Ví dụ: Tiramisu Dâu Tây" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>Danh mục</label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+                                <option value="">-- Chọn danh mục --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sự kiện (Nếu có)</label>
+                            <select asp-for="EventId" class="form-control" asp-items="@(new SelectList(ViewBag.Events, "Id", "Title"))">
+                                <option value="">-- Không có --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label>Giá bán (VNĐ)</label>
+                            <input asp-for="Price" type="number" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Tồn kho</label>
+                            <input asp-for="Stock" type="number" class="form-control" value="10" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mô tả ngắn</label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-right">
+
+                    <div class="form-group">
+                        <label>Màu sắc chủ đạo</label>
+                        <div class="color-picker-wrapper">
+                            <input asp-for="HexColor" type="color" class="color-input" value="#4B3022" id="colorPicker" />
+                            <span class="color-code" id="colorCode">#4B3022</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ảnh đại diện</label>
+                        <div class="image-upload-box">
+                            <input type="file" name="imageFile" id="imageFile" accept="image/*" onchange="previewImage(this)" hidden />
+                            <label for="imageFile" class="upload-label">
+                                <img id="preview" src="~/assets/images/upload-placeholder.png" alt="Preview" />
+                                <span class="btn-upload"><i class="fa-solid fa-cloud-arrow-up"></i> Chọn ảnh</span>
+                            </label>
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group switch-group">
+                        <label class="switch-label">Sản phẩm HOT?</label>
+                        <label class="toggle-switch">
+                            <input asp-for="IsHot" type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i> Lưu sản phẩm
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Script Preview ảnh
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Script hiện mã màu
+        document.getElementById('colorPicker').addEventListener('input', function() {
+            document.getElementById('colorCode').innerText = this.value;
+        });
+    </script>
+</body>
+</html>

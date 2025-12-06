@@ -713,3 +713,95 @@
             display: none;
         }
 }
+
+
+
+/* Style cho nút trong Slider */
+.btn-slider-cta {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    position: relative;
+    z-index: 10;
+    /* MÀU SẮC MẶC ĐỊNH */
+    color: #fff;
+    border: 2px solid #fff;
+    background-color: transparent; /* Nền trong suốt ban đầu */
+    /* TẠO LỚP MÀU ẨN (Gradient) */
+    /* Màu nền là một dải chuyển màu: 50% bên trái là màu muốn hiện (Trắng), 50% bên phải là trong suốt */
+    background-image: linear-gradient(to right, #fff 50%, transparent 50%);
+    /* Kích thước nền là 200% chiều rộng nút (để phần màu trắng bị đẩy ra ngoài) */
+    background-size: 200% 100%;
+    /* Vị trí nền ban đầu: Nằm hết về bên phải (phần trong suốt) */
+    background-position: right bottom;
+    /* Thời gian chuyển động */
+    transition: all 0.4s ease-out;
+}
+
+    .btn-slider-cta i {
+        margin-left: 8px;
+        transition: margin-left 0.3s;
+    }
+
+    /* HIỆU ỨNG KHI HOVER */
+    .btn-slider-cta:hover {
+        /* Dịch chuyển nền sang trái -> Phần màu trắng sẽ trượt vào */
+        background-position: left bottom;
+        /* Đổi màu chữ sang Nâu khi nền trắng hiện ra */
+        color: #4B3022 !important;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+        .btn-slider-cta:hover i {
+            margin-left: 12px;
+        }
+
+    /* --- XỬ LÝ RIÊNG CHO CÁC MÀU KHÁC NHAU (Matcha, Dâu...) --- */
+
+    /* 1. Matcha (Xanh) */
+    .btn-slider-cta[style*="#8D6E63"] {
+        /* Gradient: Xanh -> Trong suốt */
+        background-image: linear-gradient(to right, #8D6E63 50%, transparent 50%);
+    }
+
+        .btn-slider-cta[style*="#8D6E63"]:hover {
+            color: #fff !important; /* Chữ trắng trên nền xanh */
+            border-color: #8D6E63 !important;
+        }
+
+    /* 1. Matcha (Xanh) */
+    .btn-slider-cta[style*="#6fb490"] {
+        /* Gradient: Xanh -> Trong suốt */
+        background-image: linear-gradient(to right, #6fb490 50%, transparent 50%);
+    }
+
+        .btn-slider-cta[style*="#6fb490"]:hover {
+            color: #fff !important; /* Chữ trắng trên nền xanh */
+            border-color: #6fb490 !important;
+        }
+
+    /* 2. Strawberry (Hồng) */
+    .btn-slider-cta[style*="#ff2364"] {
+        background-image: linear-gradient(to right, #ff2364 50%, transparent 50%);
+    }
+
+        .btn-slider-cta[style*="#ff2364"]:hover {
+            color: #fff !important;
+            border-color: #ff2364 !important;
+        }
+
+    /* 3. Mango (Vàng) */
+    .btn-slider-cta[style*="#ffc107"] {
+        background-image: linear-gradient(to right, #ffc107 50%, transparent 50%);
+    }
+
+        .btn-slider-cta[style*="#ffc107"]:hover {
+            color: #fff !important;
+            border-color: #ffc107 !important;
+        }

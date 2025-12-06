@@ -3,6 +3,7 @@
     ViewData["Title"] = "Menu";
     var categories = ViewBag.Categories as List<Category>;
     var products = ViewBag.Products as List<Product>;
+    var now = DateTime.Now; // Lấy thời gian hiện tại để so sánh
 }
 
 @section Links {
@@ -48,30 +49,44 @@
                     {
                         var firstImage = item.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
                         var nameColor = !string.IsNullOrEmpty(item.HexColor) ? item.HexColor : "#4B3022";
-                        bool isSale = item.EventId != null;
+
+                        // --- LOGIC TÍNH GIẢM GIÁ ---
+                        bool hasDiscount = false;
+                        decimal originalPrice = item.Price;
+                        decimal finalPrice = item.Price;
+                        double discountPercent = 0;
+
+                        // Kiểm tra: Có Event ID + Event không null + Ngày hiện tại nằm trong khoảng diễn ra
+                        if (item.EventId != null && item.Event != null && now >= item.Event.StartDate && now <= item.Event.EndDate)
+                        {
+                            hasDiscount = true;
+                            discountPercent = item.Event.DiscountPercent;
+                            // Tính giá sau giảm: Giá gốc * (100 - %)/100
+                            finalPrice = item.Price * (decimal)((100 - discountPercent) / 100);
+                        }
 
                         // --- KIỂM TRA HẾT HÀNG ---
                         bool isSoldOut = item.Stock <= 0;
-                        string soldOutClass = isSoldOut ? "sold-out" : ""; // Class CSS để làm mờ
+                        string soldOutClass = isSoldOut ? "sold-out" : "";
 
                         <div class="product-card @soldOutClass" data-category="@item.CategoryId">
 
-                            @if (isSoldOut)
-                            {
-                                <div class="card-badge" style="background: #7f8c8d; color: white;">Hết hàng</div>
-                            }
-                            else if (isSale)
-                            {
-                                <div class="card-badge" style="background: #ff6b81; color: white;">Sale</div>
-                            }
-                            else if (item.IsHot)
-                            {
-                                <div class="card-badge" style="background: #FFD700; color: #4B3022;">Best Seller</div>
-                            }
-                            else if (item.Stock < 5)
-                            {
-                                <div class="card-badge" style="background: #95a5a6; color: white;">Limited</div>
-                            }
+                            <div class="badges-wrapper" style="position: absolute; top: 15px; left: 15px; z-index: 5; display: flex; flex-direction: column; gap: 5px;">
+                                @if (isSoldOut)
+                                {
+                                    <div class="card-badge" style="background: #7f8c8d; color: white;">Hết hàng</div>
+                                }
+                                else if (hasDiscount)
+                                {
+                                    // Hiện số % giảm cụ thể
+                                    <div class="card-badge" style="background: #ff6b81; color: white;">-@discountPercent%</div>
+                                }
+
+                                @if (item.IsHot)
+                                {
+                                    <div class="card-badge" style="background: #FFD700; color: #4B3022;">Best Seller</div>
+                                }
+                            </div>
 
                             <div class="card-img-wrapper">
                                 <img src="@firstImage" alt="@item.Name">
@@ -86,8 +101,23 @@
                                 <h3 class="product-name" style="color: @nameColor;">@item.Name</h3>
                                 <p class="product-desc">@item.Description</p>
 
-                                <div class="price-row">
-                                    <span class="price">@item.Price.ToString("N0") đ</span>
+                                <div class="price-row" style="align-items: flex-end;">
+
+                                    <div class="price-info">
+                                        @if (hasDiscount)
+                                        {
+                                            <span class="old-price" style="text-decoration: line-through; color: #999; font-size: 0.9rem; display: block;">
+                                                @originalPrice.ToString("N0") đ
+                                            </span>
+                                            <span class="price" style="color: #ff6b81;">
+                                                @finalPrice.ToString("N0") đ
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price">@originalPrice.ToString("N0") đ</span>
+                                        }
+                                    </div>
 
                                     @if (isSoldOut)
                                     {
@@ -109,11 +139,10 @@
                 else
                 {
                     <div class="col-12 text-center">
-                        <p>Hiện chưa có sản phẩm nào.</p>
+                        <p style="font-family: 'Kanit'; font-size: 1.2rem; color: #666;">Hiện chưa có sản phẩm nào.</p>
                     </div>
                 }
             </div>
-
             <div class="text-center mt-5 fade-up delay-3">
                 <a href="#" class="btn-view-more">Xem thêm các loại bánh khác</a>
             </div>

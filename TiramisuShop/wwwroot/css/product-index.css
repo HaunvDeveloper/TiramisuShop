@@ -164,7 +164,7 @@
 /* Header */
 .menu-header {
     text-align: center;
-/*    margin-bottom: 50px;*/
+    margin-bottom: 30px;
 }
 
 .menu-title {
@@ -497,3 +497,38 @@
         color: #999;
         transform: none; /* Không nảy lên */
     }
+
+/* Chỉnh lại layout phần giá để chứa được 2 dòng giá */
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end !important; /* Căn đáy để nút và giá thẳng hàng */
+    border-top: 1px dashed #eee;
+    padding-top: 15px;
+    margin-top: auto;
+}
+
+.price-info {
+    display: flex;
+    flex-direction: column; /* Xếp giá cũ lên trên giá mới */
+    line-height: 1.2;
+}
+
+.old-price {
+    font-family: "Kanit";
+    font-weight: 400;
+}
+
+/* Badge container để xếp chồng nhiều nhãn (VD: vừa Hot vừa Sale) */
+.badges-wrapper .card-badge {
+    position: relative; /* Reset position absolute cũ của badge */
+    top: auto;
+    left: auto;
+    display: inline-block;
+    width: fit-content;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

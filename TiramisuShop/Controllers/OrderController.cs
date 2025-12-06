@@ -46,18 +46,25 @@ namespace TiramisuShop.Controllers
             // Lấy các món hàng user đã chọn trong giỏ
             var cartItems = await _context.CartItems
                 .Include(c => c.Product).ThenInclude(p => p.ProductImages)
+                .Include(c => c.Product).ThenInclude(p => p.Event) // <--- QUAN TRỌNG: Include Event
                 .Where(c => c.Cart.UserId == userId && idList.Contains(c.Id))
                 .ToListAsync();
 
             if (!cartItems.Any()) return RedirectToAction("Index", "Cart");
 
-            // Chuẩn bị ViewModel
+            // Tính tổng tiền dựa trên giá đã giảm
+            decimal totalAmount = 0;
+            foreach (var item in cartItems)
+            {
+                totalAmount += CalculateDiscountPrice(item.Product) * item.Quantity;
+            }
+
             var vm = new CheckoutVM
             {
                 CheckoutItems = cartItems,
-                TotalAmount = cartItems.Sum(c => c.Quantity * c.Product.Price),
-                // Điền sẵn thông tin user nếu có
+                TotalAmount = totalAmount, // Giá đã giảm
                 ReceiverName = User.FindFirst("FullName")?.Value,
+
                 ReceiverPhone = await _context.Users.Where(u => u.Id == userId).Select(u => u.Phone).FirstOrDefaultAsync()
             };
 
@@ -72,9 +79,14 @@ namespace TiramisuShop.Controllers
 
             var cartItems = await _context.CartItems
                 .Include(c => c.Product)
+                    .ThenInclude(p => p.Event) // <--- Include Event để tính giá lưu DB
                 .Where(c => c.Cart.UserId == userId && idList.Contains(c.Id))
                 .ToListAsync();
-
+            decimal orderTotal = 0;
+            foreach (var item in cartItems)
+            {
+                orderTotal += CalculateDiscountPrice(item.Product) * item.Quantity;
+            }
             if (ModelState.IsValid)
             {
                 var order = new Order
@@ -83,7 +95,7 @@ namespace TiramisuShop.Controllers
                     CreatedAt = DateTime.Now,
                     Status = "Pending",
                     PaymentMethod = model.PaymentMethod,
-                    TotalAmount = cartItems.Sum(c => c.Quantity * c.Product.Price),
+                    TotalAmount = orderTotal,
 
                     // --- SỬA ĐOẠN NÀY: Bỏ WardName ---
                     // Định dạng: Số nhà, Quận Huyện, Tỉnh Thành
@@ -100,7 +112,7 @@ namespace TiramisuShop.Controllers
                         OrderId = order.Id,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        Price = item.Product.Price
+                        Price = CalculateDiscountPrice(item.Product)
                     };
                     _context.OrderItems.Add(orderItem);
                     item.Product.Stock -= item.Quantity;
@@ -113,13 +125,23 @@ namespace TiramisuShop.Controllers
             }
 
             model.CheckoutItems = cartItems;
-            model.TotalAmount = cartItems.Sum(c => c.Quantity * c.Product.Price);
+            model.TotalAmount = orderTotal;
             return View(model);
         }
 
         public IActionResult Success(long orderId)
         {
             return View(orderId);
+        }
+
+        private decimal CalculateDiscountPrice(Product product)
+        {
+            var now = DateTime.Now;
+            if (product.Event != null && now >= product.Event.StartDate && now <= product.Event.EndDate)
+            {
+                return product.Price * (decimal)((100 - product.Event.DiscountPercent) / 100);
+            }
+            return product.Price;
         }
     }
 }

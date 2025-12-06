@@ -14,7 +14,7 @@
 }
 
 @section Links {
-    <link rel="stylesheet" href="~/css/event.css">
+    <link rel="stylesheet" href="~/css/product-index.css">
     <link rel="stylesheet" href="~/css/event-details.css">
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -102,10 +102,9 @@
                                             }
                                             <span class="price" style="color: #ff6b81;">@discountedPrice.ToString("N0") đ</span>
                                         </div>
-                                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
-                                            <input type="hidden" name="productId" value="@item.Id" />
-                                            <button type="submit" class="btn-add-cart"><i class="fa-solid fa-cart-plus"></i></button>
-                                        </form>
+                                        <button type="button" class="btn-add-cart add-to-cart-btn" data-id="@item.Id" title="Thêm vào giỏ">
+                                            <i class="fa-solid fa-cart-plus"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -147,5 +146,67 @@
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
         });
+        $(document).ready(function () {
+            // Cập nhật số lượng giỏ hàng khi load trang
+            updateCartBadge();
+
+            // Sự kiện click nút thêm giỏ hàng
+            $('.add-to-cart-btn').click(function () {
+                var productId = $(this).data('id');
+                var btn = $(this);
+
+                // Hiệu ứng loading nhỏ trên nút
+                var originalIcon = btn.html();
+                btn.html('<i class="fa-solid fa-spinner fa-spin"></i>').prop('disabled', true);
+
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId, quantity: 1 },
+                    success: function (response) {
+                        btn.html(originalIcon).prop('disabled', false);
+
+                        if (response.success) {
+                            // Cập nhật badge số lượng trên header
+                            $('.cart-badge').text(response.cartCount).show();
+
+                            // Thông báo thành công đẹp
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm thành công!',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast: true,
+                                position: 'top-end',
+                                background: '#FCF5EF',
+                                color: '#4B3022'
+                            });
+                            updateCartBadge();
+                        } else if (response.requireLogin) {
+                            // Yêu cầu đăng nhập
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Bạn chưa đăng nhập',
+                                text: 'Vui lòng đăng nhập để mua bánh nhé!',
+                                confirmButtonText: 'Đăng nhập ngay',
+                                confirmButtonColor: '#4B3022'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/User/Login?returnUrl=' + window.location.pathname;
+                                }
+                            });
+                        } else {
+                            Swal.fire('Lỗi', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        btn.html(originalIcon).prop('disabled', false);
+                        Swal.fire('Lỗi', 'Không thể kết nối đến server.', 'error');
+                    }
+                });
+            });
+            });
+
     </script>
 }

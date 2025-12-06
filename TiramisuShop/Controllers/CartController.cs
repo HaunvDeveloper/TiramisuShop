@@ -28,6 +28,9 @@ namespace TiramisuShop.Controllers
                     .Include(c => c.CartItems)
                         .ThenInclude(ci => ci.Product)
                             .ThenInclude(p => p.ProductImages)
+                    .Include(c => c.CartItems)
+                        .ThenInclude(ci => ci.Product)
+                            .ThenInclude(p => p.Event) // <--- THÊM DÒNG NÀY (Để lấy thông tin giảm giá)
                     .FirstOrDefaultAsync(c => c.UserId == userId);
             }
             else
@@ -125,32 +128,34 @@ namespace TiramisuShop.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(long itemId, int quantity)
         {
+            var cartItem = await _context.CartItems
+                .Include(x => x.Product)
+                .Include(x => x.Product.Event) // <--- THÊM DÒNG NÀY
+                .FirstOrDefaultAsync(x => x.Id == itemId);
+
+            if (cartItem == null) return Json(new { success = false });
             if (quantity < 1) quantity = 1;
-            var userId = GetUserId();
 
-            if (userId != -1)
-            {
-                // DB Logic
-                var cartItem = await _context.CartItems.Include(x => x.Product).FirstOrDefaultAsync(x => x.Id == itemId);
-                if (cartItem == null) return Json(new { success = false });
+            cartItem.Quantity = quantity;
+            await _context.SaveChangesAsync();
 
-                cartItem.Quantity = quantity;
-                await _context.SaveChangesAsync();
-                return Json(new { success = true });
-            }
-            else
+            // --- TÍNH LẠI GIÁ (CÓ GIẢM GIÁ) ---
+            decimal price = cartItem.Product.Price;
+            var now = DateTime.Now;
+
+            // Kiểm tra sự kiện
+            if (cartItem.Product.Event != null &&
+                now >= cartItem.Product.Event.StartDate &&
+                now <= cartItem.Product.Event.EndDate)
             {
-                // Session Logic
-                var sessionItems = HttpContext.Session.Get<List<CartItem>>(CART_KEY);
-                var item = sessionItems?.FirstOrDefault(x => x.Id == itemId); // itemId ở đây là Id tạm
-                if (item != null)
-                {
-                    item.Quantity = quantity;
-                    HttpContext.Session.Set(CART_KEY, sessionItems);
-                    return Json(new { success = true });
-                }
-                return Json(new { success = false });
+                double discount = cartItem.Product.Event.DiscountPercent;
+                price = price * (decimal)((100 - discount) / 100);
             }
+
+            var itemTotal = cartItem.Quantity * price;
+            // -----------------------------------
+
+            return Json(new { success = true, itemTotal = itemTotal });
         }
 
         // POST: /Cart/RemoveItem

@@ -114,17 +114,45 @@
                             @foreach (var item in Model.CheckoutItems)
                             {
                                 var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+
+                                // --- LOGIC TÍNH GIÁ TRÊN VIEW ---
+                                var now = DateTime.Now;
+                                decimal originalPrice = item.Product.Price;
+                                decimal finalPrice = originalPrice;
+                                bool hasDiscount = false;
+
+                                if (item.Product.Event != null && now >= item.Product.Event.StartDate && now <= item.Product.Event.EndDate)
+                                {
+                                    hasDiscount = true;
+                                    finalPrice = originalPrice * (decimal)((100 - item.Product.Event.DiscountPercent) / 100);
+                                }
+                                // --------------------------------
+
                                 <div class="order-item">
                                     <div class="item-img">
                                         <img src="@img" alt="@item.Product.Name">
                                         <span class="item-qty">@item.Quantity</span>
                                     </div>
+
                                     <div class="item-info">
                                         <p class="i-name">@item.Product.Name</p>
                                         <p class="i-cat">@item.Product.Category?.Name</p>
                                     </div>
-                                    <div class="item-price">
-                                        @((item.Product.Price * item.Quantity).ToString("N0")) đ
+
+                                    <div class="item-price" style="text-align: right;">
+                                        @if (hasDiscount)
+                                        {
+                                            <div style="font-size: 0.85rem; text-decoration: line-through; color: #999;">
+                                                @((originalPrice * item.Quantity).ToString("N0")) đ
+                                            </div>
+                                            <div style="color: #ff6b81; font-weight: bold;">
+                                                @((finalPrice * item.Quantity).ToString("N0")) đ
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span>@((originalPrice * item.Quantity).ToString("N0")) đ</span>
+                                        }
                                     </div>
                                 </div>
                             }

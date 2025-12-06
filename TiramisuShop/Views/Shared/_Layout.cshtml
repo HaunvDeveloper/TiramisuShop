@@ -53,10 +53,7 @@
                                     <a asp-action="Index" asp-controller="Product">
                                         Menu
                                     </a>
-                                    <img class="angle" src="~/assets/icons/angle.svg" />
-                                    <ol class="sub-menu">
-                                        
-                                    </ol>
+                                    
                                 </li>
                                 <li class="menu-item @(currentController == "Event" ? "active" : "")"><a asp-action="Index" asp-controller="Event">Events</a></li>
                                 <li class="menu-item @(currentController == "Contact" && currentAction == "Index" ? "active" : "")">
@@ -123,45 +120,75 @@
             @RenderBody()
         </main>
         <footer id="footer">
+            
+
             <div class="mainfooter">
-                <div class="px-md-5 mx-md-5 container row">
-                    <div class="col-md-5 d-block">
-                        <div class="mb-4">
-                            <div class="logo">
-                                <img src="~/assets/images/logomini.png" alt="Golifresh Logo">
-                                <h1>Cheese Cheese</h1>
-                            </div>
-                            <p>Chill cùng tiramisu chuẩn vị.</p>
-                        </div>
-                        <div class="mb-4">
-                            <h1>Thông tin liên hệ</h1>
-                            <p>Địa chỉ: 280, An Dương Vương, phường Chợ Quán, TP.HCM</p>
-                            <p>Hotline: 0944746748</p>
-                        </div>
-                    </div>
-                    <div class="col-md-5 d-block">
-                        <div class="mb-4">
-                                <h1>Mạng xã hội</h1>
-                            <div class="d-flex gap-4 align-items-center">
-                                <a href="https://www.facebook.com/haunv1003/" class="social-media">
-                                    <img src="~/assets/icons/facebook.png" alt="">
-                                </a>
-                                <a href="https://www.youtube.com/@@CodecungHeovaMeo-oh9nl" class="social-media">
-                                    <img src="~/assets/icons/youtube.png" alt="">
-                                </a>
-                                <a href="https://zalo.me/84944746748" class="social-media">
-                                    <img src="~/assets/icons/zalo.png" alt="Zalo" />
-                                </a>
+                <div class="container mt-3">
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="footer-brand">
+                                <div class="logo-wrapper">
+                                    <img src="~/assets/images/logomini.png" alt="Cheese Cheese Logo">
+                                    <h1>Cheese Cheese</h1>
+                                </div>
+                                <p class="slogan">"Ngọt ngào trong từng miếng bánh"</p>
+                                <p class="desc">
+                                    Nơi cảm xúc thăng hoa cùng hương vị Tiramisu chuẩn Ý.
+                                    Hãy để chúng tôi làm ngọt ngào thêm ngày của bạn.
+                                </p>
                             </div>
                         </div>
-                        
+
+                        <div class="col-lg-4 col-md-6 mb-4 footer-links-col">
+                            <h3 class="footer-heading">Khám phá</h3>
+                            <ul class="footer-links">
+                                <li><a href="/">Trang chủ</a></li>
+                                <li><a href="/Home/About">Câu chuyện thương hiệu</a></li>
+                                <li><a href="/Product">Thực đơn</a></li>
+                                <li><a href="/News">Sự kiện & Ưu đãi</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 mb-4">
+                            <h3 class="footer-heading">Liên hệ</h3>
+                            <div class="contact-info">
+                                <div class="c-item">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>280, An Dương Vương, P. Chợ Quán, TP.HCM</span>
+                                </div>
+                                <div class="c-item">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <span>0944 746 748</span>
+                                </div>
+                                <div class="c-item">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <span>tiramisu.hmcoding.xyz</span>
+                                </div>
+                            </div>
+
+                            <h3 class="footer-heading mt-4">Kết nối với chúng tôi</h3>
+                            <div class="social-icons">
+                                <a href="https://www.facebook.com/haunv1003/" target="_blank" class="social-btn fb">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@@CodecungHeovaMeo-oh9nl" target="_blank" class="social-btn yt">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </a>
+                                <a href="https://zalo.me/84944746748" target="_blank" class="social-btn zl">
+                                    <span class="zalo-text">Zalo</span>
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="endfooter">
                 <div class="container">
-                    © 2025 All rights reserved - Designed and developed by HMCoding.
+                    <p>© 2025 <b>Cheese Cheese</b>. All rights reserved.</p>
+                    <p class="credit">Designed with <i class="fa-solid fa-heart"></i> by <b>Hau Nguyen</b> and <b>Thao Le</b></p>
                 </div>
             </div>
         </footer>

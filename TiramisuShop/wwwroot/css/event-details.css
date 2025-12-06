@@ -103,7 +103,6 @@
 /* --- ẢNH BÌA --- */
 .e-feature-image {
     width: 100%;
-    height: 450px; /* Chiều cao cố định */
     border-radius: 25px;
     overflow: hidden;
     margin-bottom: 50px;

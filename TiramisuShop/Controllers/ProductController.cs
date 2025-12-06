@@ -15,10 +15,15 @@ namespace TiramisuShop.Controllers
         {
             var products = _context.Products
                 .Include(p => p.ProductImages)
+                .Include(p => p.Category)
+                .Include(p => p.Event) // <--- QUAN TRỌNG: Lấy thông tin Event
                 .ToList();
+
             var categories = _context.Categories.ToList();
+
             ViewBag.Products = products;
             ViewBag.Categories = categories;
+
             return View();
         }
 

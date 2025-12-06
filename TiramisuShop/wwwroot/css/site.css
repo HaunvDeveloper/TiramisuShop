@@ -483,7 +483,7 @@ a {
         top: 0;
         left: 0;
         right: 0;
-        z-index: 9999;
+/*        z-index: 9999;*/
         width: 100%;
         transition: all .1s;
         height: 4rem;
@@ -644,256 +644,247 @@ a {
 
 
 
-
+/* --- FOOTER STYLES --- */
+:root {
+    --footer-bg: #2c1e16; /* Màu nâu đậm (Cà phê/Socola) */
+    --footer-text: #e0e0e0;
+    --footer-gold: #FFD700;
+    --footer-hover: #d35400;
+}
 
 #footer {
-    width: 100%;
-    height: fit-content;
-    background-color: #FCF5EF;
+    position: relative;
+    /*    background-color: var(--footer-bg);*/
+    color: var(--footer-text);
+    background: #FCF5EF;
 }
 
 
 
-
-/*-----------------------------Meo----------------------*/
+/* 2. Main Footer */
 .mainfooter {
-    padding-top: 100px;
-    padding-bottom: 50px;
+    padding-top: 80px; /* Chừa chỗ cho sóng */
+    padding-bottom: 40px;
+    /* Nếu muốn dùng ảnh nền mờ */
+    /* background-image: linear-gradient(rgba(44, 30, 22, 0.95), rgba(44, 30, 22, 0.95)), url('/assets/images/bg-footer.png'); */
     background-image: url('/assets/images/bg-footer.png');
-    background-size: cover; /* Hiển thị toàn bộ ảnh */
-    background-repeat: no-repeat;
-    background-position: top center; /* Giữ phần trên của ảnh */
-    color: #fff;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    background-size: cover;
 }
 
-    .mainfooter .container {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .mainfooter h1 {
-        font-size: 2.5rem;
-        letter-spacing: 1px;
-        align-items: center;
-        font-family: "Alex Brush", cursive;
-        font-weight: normal;
-        font-style: normal;
-        font-size: 2.6rem;
-        margin: 0;
-        color: #FED8B1;
-        text-wrap: nowrap;
-    }
-
-.mainfooter .container h4 {
-    color: #90e577;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-
-.logo {
-    flex-wrap: nowrap !important;
+/* Cột 1: Brand */
+.logo-wrapper {
     display: flex;
-    flex-direction: row !important;
     align-items: center;
-    justify-content: flex-start !important;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-
-    .logo img {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-    }
-    .logo p {
-        font-family: "Arima", system-ui;
-        font-optical-sizing: auto;
-        font-weight: bold;
-        font-style: normal;
+    .logo-wrapper img {
+        width: 60px;
+        height: auto;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-.contact-info {
-    display: flex;
-    gap: 5px;
+    .logo-wrapper h1 {
+        font-family: "Pacifico", cursive; /* Hoặc Allura */
+        font-size: 2.5rem;
+        color: var(--footer-gold);
+        margin: 0;
+        line-height: 1;
+    }
+
+.slogan {
+    font-family: "Allura", cursive;
+    font-size: 1.8rem;
+    color: #dcdcdc;
+    margin-bottom: 15px;
 }
 
-    .contact-info p a {
-        color: white !important;
-    }
-
-    .contact-info img {
-        width: 25px;
-        height: 25px;
-    }
-
-.social-media {
-    max-width: 40px;
-    max-height: 40px
+.desc {
+    font-family: "Kanit", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #aaa;
+    text-align: justify;
 }
 
-    .social-media img {
-        max-width: 40px;
-        max-height: 40px
-    }
-
-.social-contact {
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 2rem !important;
-}
-
-@media (max-width: 1400px) {
-    .fintro {
-        max-width: 45%;
-        min-width: 200px;
-    }
-}
-
-@media (max-width: 768px) {
-    .mainfooter .container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .social-contact {
-        flex-direction: row !important;
-    }
-
-    .logo {
-        justify-content: center !important;
-    }
-
-    .fintro {
-        max-width: 90%;
-        min-width: 200px;
-    }
-}
-
-.endfooter {
-    width: 100%;
-    min-height: 40px;
-    background-color: #000000;
-    color: white;
-    align-content: center;
-}
-
-    .endfooter .container {
-        opacity: 0.4;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.btn-highlight {
-    width: 100px;
-    height: 95%;
-    position: relative;
-    text-align: center;
-    color: #000000;
+/* Cột 2: Links */
+.footer-heading {
+    font-family: "Arima", sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--footer-gold);
     text-transform: uppercase;
-    font-size: 16px;
-    overflow: hidden;
-    transition: 0.5s;
-    border-style: none;
-    background: rgba(255, 255, 255, 0);
-    cursor: pointer;
-    background-color: #ffffff;
-    justify-content: center;
-    align-content: center;
-    border-radius: 20px;
-    margin: 5px;
-    padding: 3px 0;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
 }
 
-    .btn-highlight div {
-        font-size: 16px;
-        text-transform: uppercase;
-    }
-
-    .btn-highlight:hover {
-        color: #ffffff;
-        background: #00b456 !important;
-        box-shadow: 0 0 10px #00b456, 0 0 40px #00b456, 0 0 80px #00b456;
-        transition-delay: 0.5s;
-    }
-
-    .btn-highlight span {
+    .footer-heading::after {
+        content: '';
         position: absolute;
-        display: block;
+        width: 40px;
+        height: 2px;
+        background: var(--footer-text);
+        bottom: -8px;
+        left: 0;
     }
 
-        .btn-highlight span:nth-child(1) {
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00b456);
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+
+    .footer-links a {
+        color: var(--footer-text) !important;
+        text-decoration: none;
+        font-family: "Kanit", sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s;
+        display: inline-block;
+    }
+
+        .footer-links a:hover {
+            color: var(--footer-gold);
+            transform: translateX(5px);
         }
 
-    .btn-highlight:hover span:nth-child(1) {
-        left: 100%;
-        transition: 0.5s;
+/* Cột 3: Contact & Social */
+.mainfooter .contact-info .c-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-family: "Kanit", sans-serif;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.mainfooter .contact-info i {
+    color: var(--footer-gold);
+    margin-top: 4px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+    .social-btn i {
+        font-size: 1.1rem;
     }
 
-    .btn-highlight span:nth-child(2) {
-        top: -100%;
-        right: 0%;
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(180deg, transparent, #00b456);
+.zalo-text {
+    font-weight: bold;
+    font-size: 0.8rem;
+    font-family: sans-serif;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    color: #fff;
+}
+
+.social-btn.fb:hover {
+    background: #3b5998;
+}
+
+.social-btn.yt:hover {
+    background: #ff0000;
+}
+
+.social-btn.zl:hover {
+    background: #0068ff;
+}
+
+/* 3. End Footer */
+.endfooter {
+    background-color: #1a120d; /* Đen nâu */
+    padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-family: "Kanit", sans-serif;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+    .endfooter p {
+        margin: 0;
     }
 
-    .btn-highlight:hover span:nth-child(2) {
-        top: 100%;
-        transition: 0.5s;
-        transition-delay: 0.05s;
+    .endfooter b {
+        color: var(--footer-gold);
     }
 
-    .btn-highlight span:nth-child(3) {
-        bottom: 0;
-        right: -100%;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #00b456);
+.credit i {
+    color: #e74c3c;
+    animation: beat 1s infinite;
+}
+
+@keyframes beat {
+    0%, 100% {
+        transform: scale(1);
     }
 
-    .btn-highlight:hover span:nth-child(3) {
-        right: 100%;
-        transition: 0.5s;
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-wave svg {
+        height: 30px;
     }
 
-    .btn-highlight span:nth-child(4) {
-        bottom: -100%;
-        left: 0%;
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(360deg, transparent, #00b456);
+    .mainfooter {
+        padding-top: 50px;
+        text-align: center;
     }
 
-    .btn-highlight:hover span:nth-child(4) {
-        bottom: 100%;
-        transition: 0.5s;
-        transition-delay: 0.05s;
+    .logo-wrapper, .contact-info .c-item {
+        justify-content: center;
     }
+
+    .footer-heading::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+
+    .desc {
+        text-align: center;
+    }
+}
+
+
+
+
+
+
+
 
 
 

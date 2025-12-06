@@ -1,0 +1,335 @@
+﻿/* --- VARIABLES --- */
+:root {
+    --bg-main: #f4f6f8; /* Xám rất nhạt */
+    --brown-dark: #4B3022;
+    --gold: #FFD700;
+    --white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-light: #95a5a6;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+}
+
+.admin-container {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin: 0;
+}
+
+.page-subtitle {
+    color: var(--text-light);
+    margin: 5px 0 0;
+}
+
+.btn-create {
+    background-color: var(--brown-dark);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 5px 15px rgba(75, 48, 34, 0.2);
+    transition: 0.3s;
+}
+
+    .btn-create:hover {
+        background-color: var(--gold);
+        color: var(--brown-dark);
+        transform: translateY(-2px);
+    }
+
+/* TOOLBAR */
+.toolbar-wrapper {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+}
+
+.search-box {
+    position: relative;
+    width: 300px;
+}
+
+    .search-box input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #eee;
+        border-radius: 30px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+        .search-box input:focus {
+            border-color: var(--brown-dark);
+        }
+
+    .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ccc;
+    }
+
+.filter-actions button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #555;
+    transition: 0.3s;
+    margin-left: 10px;
+}
+
+    .filter-actions button:hover {
+        background: var(--bg-main);
+        border-color: #ccc;
+    }
+
+/* TABLE */
+.table-container {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    overflow: hidden;
+    padding: 20px;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+    .modern-table thead th {
+        text-align: left;
+        padding: 15px;
+        color: var(--text-light);
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .modern-table .text-end {
+        text-align: right;
+    }
+
+    .modern-table tbody tr {
+        transition: 0.3s;
+    }
+
+        .modern-table tbody tr:hover {
+            background-color: #fcfcfc;
+            transform: scale(1.002);
+        }
+
+    .modern-table td {
+        padding: 15px;
+        vertical-align: middle;
+        border-top: 1px solid #f9f9f9;
+        border-bottom: 1px solid #f9f9f9;
+    }
+
+    .modern-table tbody tr td:first-child {
+        border-left: 1px solid #f9f9f9;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .modern-table tbody tr td:last-child {
+        border-right: 1px solid #f9f9f9;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+/* Elements in Table */
+.id-badge {
+    font-size: 0.85rem;
+    color: #888;
+    background: #eee;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.img-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+    .img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.product-info .p-name {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.product-info .p-desc-short {
+    font-size: 0.85rem;
+    color: #999;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.category-tag {
+    background: rgba(75, 48, 34, 0.05);
+    color: var(--brown-dark);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.price-tag {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* Stock Status */
+.stock-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+    .stock-status.in-stock {
+        color: var(--success);
+        background: rgba(46, 204, 113, 0.1);
+    }
+
+    .stock-status.low-stock {
+        color: var(--warning);
+        background: rgba(243, 156, 18, 0.1);
+    }
+
+    .stock-status.out-stock {
+        color: var(--danger);
+        background: rgba(231, 76, 60, 0.1);
+    }
+
+/* Badges */
+.status-badges {
+    display: flex;
+    gap: 5px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+}
+
+    .badge.hot {
+        background: var(--gold);
+        color: var(--brown-dark);
+    }
+
+    .badge.sale {
+        background: var(--danger);
+    }
+
+    .badge.normal {
+        background: transparent;
+        color: #ccc;
+    }
+
+/* Actions */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-action {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+    .btn-action.edit {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+
+        .btn-action.edit:hover {
+            background: #3498db;
+            color: white;
+        }
+
+    .btn-action.delete {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+
+        .btn-action.delete:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+/* Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

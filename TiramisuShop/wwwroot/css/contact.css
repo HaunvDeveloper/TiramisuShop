@@ -176,20 +176,20 @@
 }
 
 /* --- 1. CỘT INFO (BÊN TRÁI) --- */
-.contact-info {
-    flex: 1;
-    min-width: 350px;
-    background: var(--white);
-    padding: 50px;
-    border-radius: 30px;
-    box-shadow: var(--shadow-card);
-    position: relative;
-    overflow: hidden;
-    /* THÊM CÁC DÒNG NÀY */
-    display: flex;
-    flex-direction: column; /* Xếp dọc nội dung */
-    justify-content: flex-start;
-}
+    .contact-wrapper .contact-info {
+        flex: 1;
+        min-width: 350px;
+        background: var(--white);
+        padding: 50px;
+        border-radius: 30px;
+        box-shadow: var(--shadow-card);
+        position: relative;
+        overflow: hidden;
+        /* THÊM CÁC DÒNG NÀY */
+        display: flex;
+        flex-direction: column; /* Xếp dọc nội dung */
+        justify-content: flex-start;
+    }
 
 /* Đảm bảo từng item chiếm hết chiều ngang để không bị đẩy lên cùng hàng */
 .info-item {

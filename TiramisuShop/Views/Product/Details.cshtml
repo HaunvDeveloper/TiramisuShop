@@ -5,13 +5,23 @@
     ViewData["Title"] = Model.Name;
     var relatedProducts = ViewBag.RelatedProducts as List<TiramisuShop.Models.Product>;
 
-    // Màu chủ đạo
     var mainColor = !string.IsNullOrEmpty(Model.HexColor) ? Model.HexColor : "#4B3022";
 
+    // --- LOGIC TÍNH GIÁ MỚI ---
+    decimal originalPrice = Model.Price;
     decimal finalPrice = Model.Price;
-    bool isSale = Model.EventId != null;
+    bool isSale = false;
+    double discountPercent = 0;
+    var now = DateTime.Now;
 
-    // Lấy dữ liệu đánh giá từ ViewBag (được tính ở Controller)
+    if (Model.EventId != null && Model.Event != null && now >= Model.Event.StartDate && now <= Model.Event.EndDate)
+    {
+        isSale = true;
+        discountPercent = Model.Event.DiscountPercent;
+        finalPrice = originalPrice * (decimal)((100 - discountPercent) / 100);
+    }
+    // ---------------------------
+
     double avgRating = ViewBag.AverageRating ?? 0;
     int reviewCount = ViewBag.ReviewCount ?? 0;
     int roundedRating = (int)Math.Round(avgRating);
@@ -108,7 +118,7 @@
                         }
                         else if (isSale)
                         {
-                            <span class="badge sale">Sale Off</span>
+                            <span class="badge sale" style="background: #ff6b81;">-@discountPercent%</span>
                         }
 
                         @if (Model.IsHot)
@@ -120,22 +130,21 @@
                     <h1 class="p-name" style="color: @mainColor">@Model.Name</h1>
 
                     <div class="p-rating">
-                        @for (int i = 1; i <= 5; i++)
-                        {
-                            if (i <= roundedRating)
-                            {
-                                <i class="fa-solid fa-star" style="color: #FFD700"></i>
-                            }
-                            else
-                            {
-                                <i class="fa-regular fa-star" style="color: #ccc"></i>
-                            }
-                        }
-                        <span class="review-count">(@reviewCount đánh giá)</span>
                     </div>
 
                     <div class="p-price">
-                        <span class="current-price" style="color: @mainColor">@finalPrice.ToString("N0") đ</span>
+                        @if (isSale)
+                        {
+                            <span class="current-price" style="color: @mainColor">@finalPrice.ToString("N0") đ</span>
+
+                            <span class="old-price" style="text-decoration: line-through; color: #999; font-size: 1.2rem; font-weight: 400;">
+                                @originalPrice.ToString("N0") đ
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="current-price" style="color: @mainColor">@originalPrice.ToString("N0") đ</span>
+                        }
                     </div>
 
                     <div class="p-desc">

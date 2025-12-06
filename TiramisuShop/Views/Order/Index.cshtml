@@ -56,7 +56,6 @@
                                 @foreach (var item in order.OrderItems)
                                 {
                                     var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
-                                    // Tính thành tiền của từng dòng (Line Total)
                                     var lineTotal = item.Price * item.Quantity;
 
                                     <div class="o-item-row">
@@ -65,7 +64,6 @@
                                         </div>
 
                                         <div class="item-details">
-
                                             <div class="detail-left">
                                                 <a href="/Product/Details/@item.ProductId" class="item-name">@item.Product.Name</a>
                                                 <div class="item-calculation">
@@ -81,6 +79,25 @@
                                         </div>
                                     </div>
                                 }
+
+                                <div class="o-item-row" style="border-top: 1px dashed #e0e0e0;">
+                                    <div class="item-thumb" style="display: flex; align-items: center; justify-content: center; background-color: #f9f9f9; border-radius: 10px;">
+                                        <i class="fa-solid fa-truck-fast" style="color: #8D6E63; font-size: 1.5rem;"></i>
+                                    </div>
+
+                                    <div class="item-details">
+                                        <div class="detail-left">
+                                            <span class="item-name" style="color: #666; font-weight: 500;">Phí vận chuyển</span>
+                                            <div class="item-calculation" style="background: transparent; padding-left: 0;">
+                                                <span style="font-size: 0.85rem; color: #999;">Giao hàng tiêu chuẩn</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="detail-right">
+                                            <span class="line-total">20.000 đ</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="card-footer-row">
