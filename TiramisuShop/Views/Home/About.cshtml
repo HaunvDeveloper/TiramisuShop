@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/home-about.css">
+}
+<section id="content" style="background: #FCF5EF;">
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt=""></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Ngọt ngào trong từng miếng bánh</h5>
+    </div>
+    <div class="section-story">
+        <div class="container">
+            <h2 class="story-title fade-up">Tiệm bánh Cheese Cheese</h2>
+            <div class="story-wrapper">
+                
+                <div class="story-content fade-up">
+                    
+                    <p class="story-text">
+                        Ra đời năm 2025, Cheese Cheese mang trong mình niềm đam mê ẩm thực Ý và chọn tiramisu làm dấu ấn riêng.
+                    </p>
+                    <p class="story-text">
+                        Với hương vị cân bằng giữa cà phê nồng nàn, phô mai béo ngậy và cacao dịu nhẹ, tiramisu tại Cheese Cheese không chỉ ngọt ngào mà còn chạm đến cảm xúc.
+                    </p>
+                </div>
+
+                <div class="story-image fade-up delay-2">
+                    <div class="img-circle-mask">
+                        <img src="~/assets/images/aboutus1.jpg" alt="Cheese Cheese Store">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="section-mission">
+        <div class="container">
+            <div class="mission-wrapper fade-up delay-2">
+
+                <div class="mission-bg">
+                    <div class="mission-content">
+                        <p>
+                            Cheese Cheese tin rằng, một chiếc bánh ngon không chỉ dừng lại ở hương vị, mà còn là một câu chuyện, một cảm giác ấm áp được gửi gắm.
+                        </p>
+                        <p>
+                            Mỗi chiếc tiramisu ra đời đều là một lát cắt của hạnh phúc, là thông điệp yêu thương mà Cheese Cheese mong muốn lan tỏa đến từng khách hàng.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="decor-cake">
+                    <img src="~/assets/images/Tiramisu6.png" alt="Cake Decor">
+                </div>
+
+                <div class="decor-beans">
+                    <img src="~/assets/images/hatcaphe.png" alt="Beans Decor">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts {
+    <script>
+        var swiper = new Swiper(".introSwiper", {
+             spaceBetween: 0,
+             centeredSlides: true,
+             autoplay: { delay: 3500, disableOnInteraction: false },
+             speed: 3000,
+             loop: true
+         });
+
+         
+        // CODE MỚI: Hiệu ứng nhảy chữ
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.querySelector('.title-cheese');
+            const textContent = textElement.innerText;
+            textElement.innerHTML = '';
+
+            // Biến đếm tổng thời gian delay tích lũy
+            // Bắt đầu từ 1.5s (để chờ animation Intro chạy xong)
+            let accumulatedDelay = 1.5;
+
+            textContent.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+
+                if (char === ' ') {
+                    span.innerHTML = '&nbsp;';
+                    // Nếu gặp dấu cách, cho nghỉ lâu hơn một chút (ví dụ 0.5s) để tách 2 từ
+                    accumulatedDelay += 0.5;
+                } else {
+                    span.innerText = char;
+
+                    // Gán delay tích lũy hiện tại cho chữ cái này
+                    span.style.animationDelay = accumulatedDelay + 's';
+
+                    // Tính toán thời gian nghỉ cho chữ TIẾP THEO:
+                    // Math.random() * 0.4: Tạo số ngẫu nhiên từ 0 -> 0.4s
+                    // + 0.2: Đảm bảo tối thiểu phải nghỉ 0.2s (để chữ trước kịp rớt xuống)
+                    // => Khoảng cách giữa các chữ sẽ dao động từ 0.2s đến 0.6s
+                    let randomGap = (Math.random() * 0.4) + 0.2;
+
+                    accumulatedDelay += randomGap;
+                }
+
+                textElement.appendChild(span);
+            });
+
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    // Nếu phần tử xuất hiện trong màn hình
+                    if (entry.isIntersecting) {
+                        // Thêm class 'active' để kích hoạt CSS animation
+                        entry.target.classList.add('active');
+
+                        // (Tùy chọn) Ngừng quan sát sau khi đã hiện xong để không chạy lại
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2 // Kích hoạt khi 20% phần tử lọt vào khung hình
+            });
+
+            // Tìm tất cả các phần tử có class .fade-up
+            const hiddenElements = document.querySelectorAll('.fade-up');
+
+            // Bắt đầu quan sát từng phần tử
+            hiddenElements.forEach((el) => observer.observe(el));
+        });
+
+    </script>
+}

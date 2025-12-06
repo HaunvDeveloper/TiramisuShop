@@ -1,35 +1,4 @@
-﻿@font-face {
-    font-family: 'BauhausStd-Bold';
-    src: url('/assets/fonts/BauhausStd-Bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'BauhausStd-Demi';
-    src: url('/assets/fonts/BauhausStd-Demi.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'BauhausStd-Heavy';
-    src: url('/assets/fonts/BauhausStd-Heavy.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'BauhausStd-Light';
-    src: url('/assets/fonts/BauhausStd-Light.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'BauhausStd-Medium';
-    src: url('/assets/fonts/BauhausStd-Medium.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
+﻿
 body {
     margin: 0;
     padding: 0;
@@ -219,8 +188,8 @@ a {
     }
 
 #header .header-left .menu-bar {
-    margin: 0.2rem;
-    padding: 0.4rem 0;
+/*    margin: 0.2rem;*/
+/*    padding: 0.4rem 0;*/
     cursor: pointer;
 }
 

@@ -4,117 +4,169 @@
 
 @section Links {
     <link rel="stylesheet" href="~/css/home-index.css">
-
-    <!-- FONT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-          rel="stylesheet">
 }
 <section id="content" style="background: #FCF5EF;">
     <div id="intro-picture">
         <div class="swiper mySwiper introSwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide"><img src="~/assets/images/Home.png" alt=""></div>
-                @* <div class="swiper-slide"><img src="~/assets/images/intro2.png" alt=""></div>
-                <div class="swiper-slide"><img src="~/assets/images/intro3.png" alt=""></div> *@
             </div>
         </div>
         <h2 class="title-cheese">CHEESE CHEESE</h2>
         <h5 class="subtitle-cheese">Ngọt ngào trong từng miếng bánh</h5>
     </div>
-    <div id="intro-title">
-        <div class="intro-title-content scroll-animate">
-            <div>Localizer["title-intro"] <strong>Localizer["subname-company"]</strong></div>
-            <p>Localizer["main-subtitle"]</p>
-        </div>
-    </div>
-    <div class="intro-para">
+    <div class="section-loi-ngo">
         <div class="container">
-            <div class="para-content scroll-animate">
-                <h4>Localizer["name-company"]</h4>
+            <div class="loi-ngo-wrapper">
+                <div class="loi-ngo-content fade-up delay-1">
+                    <h2 class="loi-ngo-title">Lời ngỏ</h2>
+                    <p>Chào mừng bạn đến với Cheese Cheese – Thiên đường tiramisu ngọt ngào chuẩn vị Ý!</p>
+                    <p>Mỗi chiếc bánh ở đây đều được làm thủ công với lớp phô mai béo ngậy, hương cà phê nồng nàn và chút cacao quyến rũ, sẵn sàng đánh thức mọi giác quan của bạn.</p>
+                </div>
 
-                <i><b>“Always Fresh to You”</b></i>
-
-                <p>Localizer["intro-content-1"]</p>
-
-                <p>Localizer["intro-content-2"]</p>
-
-                <p>
-                    Localizer["intro-content-3"]
-                </p>
-                <p>Localizer["intro-content-4"]</p>
-            </div>
-            <div class="para-img scroll-animate">
-                <img src="~/assets/images/intro-sub.png" alt="">
+                <div class="loi-ngo-images">
+                    <div class="img-col-left fade-up delay-2">
+                        <img src="~/assets/images/Tiramisu3.jpg" alt="Strawberry Cake">
+                    </div>
+                    <div class="img-col-right fade-up delay-3">
+                        <img src="~/assets/images/Tiramisu4.jpg" alt="Mango Cake" class="mb-img">
+                        <img src="~/assets/images/Tiramisu2.jpg" alt="Matcha Cake">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="our-products">
-        <div class="intro-title-content scroll-animate mb-2">
-            <div><strong>Localizer["our-products"]</strong></div>
-            <p>Localizer["main-subtitle"]</p>
-        </div>
-        <div class="container">
-            <div class="row">
-                @* @if (ViewBag.ProductTypes != null)
-                {
-                    @foreach (var type in ViewBag.ProductTypes)
-                    {
-                        <div class="col-lg-3 col-6 mb-lg-0 mb-5 mt-sm-5 mt-lg-0 mt-3 scroll-animate-d2">
-                            <div class="product">
-                                <a href="@Url.Action("Index", "Product", new { type = type.Code })" class="product--links" title="">
+    <div class="section-gallery-slider">
+        <div class="grunge-border-top"></div>
 
+        <div class="container position-relative">
+            <div class="swiper gallerySwiper fade-up">
+                <div class="swiper-wrapper">
 
-                                    <div class="product--content">
-                                        <div class="top-index">
-                                            <h2 class="title">
-                                                @type.Name.Split("##EnVi##")[cul]
-                                            </h2>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="card-image">
+                                <img src="~/assets/images/Tiramisu1.jpg" alt="Tiramisu Truyền thống">
+                            </div>
+                            <div class="card-content">
+                                <img class="card-img" src="~/assets/images/hatcaphe.png" style="width: 200px !important;     bottom: -42%;
+    right: -5%;" />
+                                <h3 class="card-title">Tiramisu</h3>
+                                <h5 class="card-subtitle">Truyền thống</h5>
+                                <p class="card-desc">
+                                    Ngọt ngào đánh thức vị giác.<br>
+                                    Ngất ngây từ lớp đầu tiên!
+                                </p>
+                            </div>
 
-                                            <div class="sub">
-                                                <p>(Fresh Fruits and Vegetable, Premium Quality)</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product--image">
-                                        <img src="/Data/ProductTypes/@type.PictureFileName" alt="">
-                                    </div>
-                                </a>
+                            <img src="~/assets/images/coffee-beans-flying.png" class="decor-bean" alt="">
+                            <img src="~/assets/images/coffee-splash.png" class="decor-splash" alt="">
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="card-image">
+                                <img src="~/assets/images/Tiramisu2.jpg" alt="Tiramisu Matcha">
+                            </div>
+                            <div class="card-content">
+                                <img class="card-img" src="~/assets/images/lamatcha.png" style="width: 200px !important; bottom: -30%;right: -10%;" />
+
+                                <h3 class="card-title" style="color: #6fb490;">Matcha</h3>
+                                <h5 class="card-subtitle">Thanh mát</h5>
+                                <p class="card-desc">
+                                    Hương trà xanh Nhật Bản thanh tao.<br>
+                                    Hòa quyện cùng kem phô mai béo ngậy.
+                                </p>
+                            </div>
+                            <img src="~/assets/images/leaf-decor.png" class="decor-bean" alt="">
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="card-image">
+                                <img src="~/assets/images/Tiramisu3.jpg" alt="Tiramisu Dâu">
+                            </div>
+                            <div class="card-content">
+                                <img class="card-img" src="~/assets/images/traidau.png" style="width: 160px !important; bottom: -35%;right: -10%;" />
+
+                                <h3 class="card-title" style="color: #ff2364;">Strawberry</h3>
+                                <h5 class="card-subtitle">Quyến rũ</h5>
+                                <p class="card-desc">
+                                    Sự kết hợp hoàn hảo giữa vị chua thanh của dâu tây tươi
+                                    và lớp kem phô mai béo ngậy đầy mê hoặc.
+                                </p>
+                            </div>
+                            <img src="~/assets/images/leaf-decor.png" class="decor-bean" alt="">
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="card-image">
+                                <img src="~/assets/images/Tiramisu4.jpg" alt="Tiramisu Mango">
+                            </div>
+                            <div class="card-content">
+                                <img class="card-img" src="~/assets/images/mienxoai.png" style="width: 200px !important; top: -40%; right: -12%;" />
+
+                                <h3 class="card-title" style="color: #ffc107;">Mango</h3>
+                                <h5 class="card-subtitle">Nhiệt đới</h5>
+                                <p class="card-desc">
+                                    Vị chua ngọt của xoài tươi.<br>
+                                    Mang cả mùa hè vào trong từng miếng bánh.
+                                </p>
                             </div>
                         </div>
-                    }
-                } *@
-
-            </div>
-
-
-        </div>
-    </div>
-    <div class="section-gallery scroll-animate-bottom">
-        <div class="container position-relative">
-            <div class="intro-title-content scroll-animate">
-                <div><strong>Localizer["our-gallery"]</strong></div>
-                <p>Localizer["main-subtitle"]</p>
-            </div>
-            <div class="swiper ourGallery">
-                <div class="swiper-wrapper">
-                    @* @if (listgalleries != null)
-                    {
-                        @foreach (var gal in listgalleries)
-                        {
-                            <div class="swiper-slide">
-                                <img src="/Data/Galleries/@gal.FileName" />
-                            </div>
-                        }
-                    } *@
+                    </div>
 
                 </div>
-                <div class="swiper-pagination"></div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
         </div>
+
+        <div class="grunge-border-bottom"></div>
     </div>
-    <div class="news">
+
+    <div class="section-hours">
+        <div class="container">
+            <div class="hours-card fade-up">
+                <h2 class="hours-title">Thời gian hoạt động</h2>
+
+                <div class="hours-list">
+                    <div class="hours-row">
+                        <span class="day">Thứ 2</span>
+                        <span class="time">8:00 - 21:00</span>
+                    </div>
+                    <div class="hours-row">
+                        <span class="day">Thứ 3</span>
+                        <span class="time">8:00 - 21:00</span>
+                    </div>
+                    <div class="hours-row">
+                        <span class="day">Thứ 4</span>
+                        <span class="time">8:00 - 21:00</span>
+                    </div>
+                    <div class="hours-row">
+                        <span class="day">Thứ 5</span>
+                        <span class="time">8:00 - 21:00</span>
+                    </div>
+                    <div class="hours-row">
+                        <span class="day">Thứ 6</span>
+                        <span class="time">8:00 - 21:00</span>
+                    </div>
+                    <div class="hours-row highlight">
+                        <span class="day">Thứ 7</span>
+                        <span class="time">8:30 - 22:00</span>
+                    </div>
+                    <div class="hours-row highlight">
+                        <span class="day">Chủ Nhật</span>
+                        <span class="time">8:30 - 22:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -123,41 +175,85 @@
 @section Scripts {
     <script>
         var swiper = new Swiper(".introSwiper", {
-            spaceBetween: 0,
-            centeredSlides: true,
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-            },
-            speed: 3000,
-            loop: true
-        });
+             spaceBetween: 0,
+             centeredSlides: true,
+             autoplay: { delay: 3500, disableOnInteraction: false },
+             speed: 3000,
+             loop: true
+         });
 
-        var swiper = new Swiper(".ourGallery", {
-            effect: "coverflow",
-            grabCursor: true,
-            centeredSlides: true,
-            slidesPerView: "auto",
-            initialSlide: 0,
-            loop: true,
-            coverflowEffect: {
-                rotate: 50,
-                stretch: 0,
-                depth: 100,
-                modifier: 1,
-                slideShadows: true,
-
-            },
-            pagination: {
-                el: ".swiper-pagination",
+         var gallerySwiper = new Swiper(".gallerySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true, // Lặp lại vô tận
+            effect: "slide", // Hiệu ứng trượt ngang
+            speed: 800, // Tốc độ trượt
+            navigation: {
+                nextEl: ".section-gallery-slider .swiper-button-next",
+                prevEl: ".section-gallery-slider .swiper-button-prev",
             },
             autoplay: {
-                delay: 2500,
+                delay: 5000, // Tự động chạy sau 5s
                 disableOnInteraction: false,
             },
-            speed: 1000
         });
+        // CODE MỚI: Hiệu ứng nhảy chữ
+        document.addEventListener("DOMContentLoaded", function() {
+            const textElement = document.querySelector('.title-cheese');
+            const textContent = textElement.innerText;
+            textElement.innerHTML = '';
 
+            // Biến đếm tổng thời gian delay tích lũy
+            // Bắt đầu từ 1.5s (để chờ animation Intro chạy xong)
+            let accumulatedDelay = 1.5;
+
+            textContent.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+
+                if (char === ' ') {
+                    span.innerHTML = '&nbsp;';
+                    // Nếu gặp dấu cách, cho nghỉ lâu hơn một chút (ví dụ 0.5s) để tách 2 từ
+                    accumulatedDelay += 0.5;
+                } else {
+                    span.innerText = char;
+
+                    // Gán delay tích lũy hiện tại cho chữ cái này
+                    span.style.animationDelay = accumulatedDelay + 's';
+
+                    // Tính toán thời gian nghỉ cho chữ TIẾP THEO:
+                    // Math.random() * 0.4: Tạo số ngẫu nhiên từ 0 -> 0.4s
+                    // + 0.2: Đảm bảo tối thiểu phải nghỉ 0.2s (để chữ trước kịp rớt xuống)
+                    // => Khoảng cách giữa các chữ sẽ dao động từ 0.2s đến 0.6s
+                    let randomGap = (Math.random() * 0.4) + 0.2;
+
+                    accumulatedDelay += randomGap;
+                }
+
+                textElement.appendChild(span);
+            });
+
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    // Nếu phần tử xuất hiện trong màn hình
+                    if (entry.isIntersecting) {
+                        // Thêm class 'active' để kích hoạt CSS animation
+                        entry.target.classList.add('active');
+
+                        // (Tùy chọn) Ngừng quan sát sau khi đã hiện xong để không chạy lại
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2 // Kích hoạt khi 20% phần tử lọt vào khung hình
+            });
+
+            // Tìm tất cả các phần tử có class .fade-up
+            const hiddenElements = document.querySelectorAll('.fade-up');
+
+            // Bắt đầu quan sát từng phần tử
+            hiddenElements.forEach((el) => observer.observe(el));
+        });
 
     </script>
 }
