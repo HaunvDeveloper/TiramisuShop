@@ -49,7 +49,10 @@
             <div class="card-header">
                 <h3><i class="fa-solid fa-chart-line"></i> Biểu đồ doanh thu (7 ngày qua)</h3>
             </div>
-            <canvas id="revenueChart"></canvas>
+
+            <div class="chart-wrapper-fix">
+                <canvas id="revenueChart"></canvas>
+            </div>
         </div>
         <div class="chart-container sub-chart">
             <div class="card-header">
@@ -124,25 +127,29 @@
     </div>
 
 </div>
-
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Cấu hình biểu đồ Chart.js
         const ctx = document.getElementById('revenueChart').getContext('2d');
 
-        // Dữ liệu giả lập (Bạn có thể lấy từ Controller nếu muốn xịn hơn)
-        const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+        // --- LẤY DỮ LIỆU TỪ CONTROLLER ---
+        // Sử dụng @@Json.Serialize để chuyển List C# thành Array JS
+        const labels = @Html.Raw(Json.Serialize(Model.ChartLabels));
+        const dataValues = @Html.Raw(Json.Serialize(Model.ChartData));
+
         const data = {
             labels: labels,
             datasets: [{
                 label: 'Doanh thu (VNĐ)',
-                data: [1500000, 2300000, 1800000, 3200000, 2100000, 4500000, 3800000],
+                data: dataValues, // Gán dữ liệu thật vào đây
                 borderColor: '#4B3022',
                 backgroundColor: 'rgba(75, 48, 34, 0.1)',
                 borderWidth: 2,
                 tension: 0.4, // Đường cong mềm mại
-                fill: true
+                fill: true,
+                pointBackgroundColor: '#FFD700', // Điểm màu vàng
+                pointRadius: 4
             }]
         };
 
@@ -151,11 +158,35 @@
             data: data,
             options: {
                 responsive: true,
+                maintainAspectRatio: false, // Để biểu đồ tự co giãn theo khung
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            // Format tiền tệ trong tooltip (ví dụ: 1.000.000 đ)
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
                 },
                 scales: {
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            // Format trục Y thành tiền tệ
+                            callback: function(value, index, values) {
+                                return new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(value);
+                            }
+                        }
+                    }
                 }
             }
         });

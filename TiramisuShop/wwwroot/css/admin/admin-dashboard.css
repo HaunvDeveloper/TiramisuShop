@@ -2,7 +2,13 @@
 .dashboard-container {
     padding-bottom: 50px;
 }
-
+/* Thêm vào cuối file css */
+.chart-wrapper-fix {
+    position: relative;
+    height: 350px; /* Bắt buộc phải có chiều cao cụ thể */
+    width: 100%;
+    overflow: hidden;
+}
 /* 1. Stats Grid */
 .stats-grid {
     display: grid;
