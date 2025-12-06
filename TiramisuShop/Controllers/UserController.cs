@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using TiramisuShop.Helpers;
 using TiramisuShop.Models; // Namespace chứa DbContext của bạn
 using TiramisuShop.ViewModels;
-using TiramisuShop.Helpers;
 
 namespace TiramisuShop.Controllers
 {
@@ -149,6 +150,81 @@ namespace TiramisuShop.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = long.Parse(User.FindFirst("UserId").Value);
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return NotFound();
+
+            var vm = new UserProfileVM
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Phone = user.Phone,
+                CreatedAt = user.CreatedAt
+            };
+
+            return View(vm);
+        }
+
+        // --- 2. CHỈNH SỬA HỒ SƠ ---
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var userId = long.Parse(User.FindFirst("UserId").Value);
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return NotFound();
+
+            var vm = new UserProfileVM
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email, // Email hiển thị nhưng readonly
+                Phone = user.Phone
+            };
+
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserProfileVM model)
+        {
+            var userId = long.Parse(User.FindFirst("UserId").Value);
+
+            // Bảo mật: Đảm bảo user chỉ sửa được profile của chính mình
+            if (userId != model.Id) return Forbid();
+
+            if (ModelState.IsValid)
+            {
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null) return NotFound();
+
+                // Cập nhật thông tin
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.Phone = model.Phone;
+                // Không cập nhật Email để tránh lỗi xác thực
+
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Cập nhật hồ sơ thành công!";
+                return RedirectToAction("Profile");
+            }
+
+            return View(model);
         }
     }
 }

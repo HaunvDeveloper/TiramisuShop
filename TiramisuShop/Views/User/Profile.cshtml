@@ -1,0 +1,63 @@
+﻿@model TiramisuShop.ViewModels.UserProfileVM
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+}
+
+<section id="content" style="background: #FCF5EF; padding-top: 80px; min-height: 100vh;">
+    <div class="container mt-5 pb-5">
+        <div class="profile-card fade-up">
+
+            <div class="profile-header">
+                <div class="avatar-large">@Model.AvatarLetter</div>
+                <h2 class="profile-name">@Model.FullName</h2>
+                <p class="profile-role">Thành viên thân thiết</p>
+            </div>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert-success-custom">
+                    <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
+                </div>
+            }
+
+            <div class="profile-body">
+                <div class="info-row">
+                    <span class="label"><i class="fa-regular fa-envelope"></i> Email</span>
+                    <span class="value">@Model.Email</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fa-solid fa-phone"></i> Số điện thoại</span>
+                    <span class="value">@Model.Phone</span>
+                </div>
+                <div class="info-row">
+                    <span class="label"><i class="fa-regular fa-calendar"></i> Ngày tham gia</span>
+                    <span class="value">@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a asp-action="EditProfile" class="btn-edit">
+                    <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa hồ sơ
+                </a>
+                <a asp-controller="Order" asp-action="Index" class="btn-history">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Lịch sử đơn hàng
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Simple animation
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.profile-card').classList.add('active');
+        });
+    </script>
+}

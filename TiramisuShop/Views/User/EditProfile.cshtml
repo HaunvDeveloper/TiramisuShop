@@ -1,0 +1,63 @@
+﻿@model TiramisuShop.ViewModels.UserProfileVM
+@{
+    ViewData["Title"] = "Chỉnh sửa hồ sơ";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+
+<section id="content" style="background: #FCF5EF; padding-top: 80px; min-height: 100vh;">
+    <div class="container mt-5 pb-5">
+        <div class="profile-card edit-mode fade-up">
+
+            <div class="form-header">
+                <h2 class="form-title">Cập nhật thông tin</h2>
+                <a asp-action="Profile" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+            </div>
+
+            <form asp-action="EditProfile" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Họ</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tên</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email (Không thể thay đổi)</label>
+                    <input asp-for="Email" class="form-control disabled" readonly />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Số điện thoại</label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i> Lưu thay đổi
+                </button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.profile-card').classList.add('active');
+        });
+    </script>
+}
