@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cheese Admin</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/admin/admin-layout.css">
+
+    @await RenderSectionAsync("Styles", required: false)
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <div class="admin-wrapper">
+
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="~/assets/images/logomini.png" alt="Logo" class="logo-img">
+                <span class="brand-name">Cheese Admin</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="/Admin/Dashboard" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                            <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Product" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Product" ? "active" : "")">
+                            <i class="fa-solid fa-box-open"></i> <span>Sản phẩm</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Setting" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Setting" ? "active" : "")">
+                            <i class="fa-solid fa-gear"></i> <span>Cấu hình</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="/" class="btn-logout"><i class="fa-solid fa-house"></i> Trang chủ Web</a>
+            </div>
+        </aside>
+
+        <main class="admin-content">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <h3>@ViewData["Title"]</h3>
+                </div>
+                <div class="topbar-right">
+                    <div class="admin-profile">
+                        <img src="~/assets/images/user-solid-full.svg" alt="Admin">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                @RenderBody()
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

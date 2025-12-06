@@ -1,0 +1,163 @@
+﻿@model TiramisuShop.Areas.Admin.Models.DashboardVM
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml"; // Sử dụng Layout mới
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin/admin-dashboard.css">
+}
+
+<div class="dashboard-container">
+
+    <div class="stats-grid">
+        <div class="stat-card revenue">
+            <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="stat-info">
+                <h3>Doanh thu</h3>
+                <p>@Model.TotalRevenue.ToString("N0") đ</p>
+            </div>
+        </div>
+
+        <div class="stat-card orders">
+            <div class="stat-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="stat-info">
+                <h3>Đơn hàng</h3>
+                <p>@Model.TotalOrders</p>
+            </div>
+        </div>
+
+        <div class="stat-card products">
+            <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+            <div class="stat-info">
+                <h3>Món ăn</h3>
+                <p>@Model.TotalProducts</p>
+            </div>
+        </div>
+
+        <div class="stat-card users">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-info">
+                <h3>Khách hàng</h3>
+                <p>@Model.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-row">
+        <div class="chart-container main-chart">
+            <div class="card-header">
+                <h3><i class="fa-solid fa-chart-line"></i> Biểu đồ doanh thu (7 ngày qua)</h3>
+            </div>
+            <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="chart-container sub-chart">
+            <div class="card-header">
+                <h3><i class="fa-regular fa-comments"></i> Đánh giá mới</h3>
+            </div>
+            <div class="review-list-mini">
+                @if (Model.RecentReviews.Any())
+                {
+                    foreach (var review in Model.RecentReviews)
+                    {
+                        <div class="review-item">
+                            <div class="review-avatar">@review.User.FirstName.Substring(0, 1)</div>
+                            <div class="review-text">
+                                <strong>@review.User.FirstName @review.User.LastName</strong>
+                                <span class="stars">@review.Rating <i class="fa-solid fa-star"></i></span>
+                                <p>@review.Comment</p>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">Chưa có đánh giá nào.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-orders-container">
+        <div class="card-header">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Đơn hàng gần đây</h3>
+            <a href="/AdminOrder" class="btn-view-all">Xem tất cả</a>
+        </div>
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.RecentOrders)
+                {
+                    string statusClass = order.Status.ToLower();
+                    <tr>
+                        <td><span class="id-badge">#@order.Id</span></td>
+                        <td>
+                            <div class="user-info">
+                                <span class="u-name">@(order.User != null ? order.User.FirstName : "Khách vãng lai")</span>
+                            </div>
+                        </td>
+                        <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="price">@order.TotalAmount.ToString("N0") đ</td>
+                        <td>
+                            <span class="status-badge @statusClass">
+                                @(order.Status == "Pending" ? "Chờ xử lý" :
+                                                            order.Status == "Shipping" ? "Đang giao" :
+                                                            order.Status == "Completed" ? "Hoàn thành" : "Hủy")
+                        </span>
+                    </td>
+                    <td>
+                        <a href="#" class="btn-icon"><i class="fa-regular fa-eye"></i></a>
+                    </td>
+                </tr>
+                                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Cấu hình biểu đồ Chart.js
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        // Dữ liệu giả lập (Bạn có thể lấy từ Controller nếu muốn xịn hơn)
+        const labels = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: [1500000, 2300000, 1800000, 3200000, 2100000, 4500000, 3800000],
+                borderColor: '#4B3022',
+                backgroundColor: 'rgba(75, 48, 34, 0.1)',
+                borderWidth: 2,
+                tension: 0.4, // Đường cong mềm mại
+                fill: true
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+}

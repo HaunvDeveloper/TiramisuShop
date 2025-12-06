@@ -1,9 +1,12 @@
 ﻿@using System.Globalization
 @using System.Security.Claims
+@inject TiramisuShopContext _context
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var currentAction = ViewContext.RouteData.Values["action"].ToString();
+    var currentSeason = _context.SystemSettings.Find("CurrentSeason")?.Value ?? "None";
+
 }
 
 <!DOCTYPE html>
@@ -26,6 +29,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Arima:wght@100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/seasons.css">
 
 
 
@@ -33,6 +37,7 @@
 </head>
 
 <body>
+    <div id="season-container" data-season="@currentSeason"></div>
     <div id="app">
         <header id="header">
             <div class="container">
@@ -312,6 +317,7 @@
                 updateCartBadge();
             });
     </script>
+    <script src="~/js/seasons.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

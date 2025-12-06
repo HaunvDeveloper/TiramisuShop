@@ -1,20 +1,13 @@
 ﻿@model TiramisuShop.Models.Product
 @{
     ViewData["Title"] = "Chỉnh sửa sản phẩm";
-    Layout = null;
     var currentImg = Model.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
-}
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml"; // Sử dụng Layout mới
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+}
+@section Styles {
     <link rel="stylesheet" href="~/css/admin/admin-form.css">
-</head>
-<body>
+}
     <div class="form-container">
         <div class="form-header">
             <h2>Chỉnh sửa: @Model.Name</h2>
@@ -93,7 +86,7 @@
             </div>
         </form>
     </div>
-
+@section Scripts {
     <script>
         function previewImage(input) {
             if (input.files && input.files[0]) {
@@ -106,5 +99,4 @@
             document.getElementById('colorCode').innerText = this.value;
         });
     </script>
-</body>
-</html>
+}

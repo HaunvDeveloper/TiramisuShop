@@ -35,6 +35,8 @@ public partial class TiramisuShopContext : DbContext
 
     public virtual DbSet<Review> Reviews { get; set; }
 
+    public virtual DbSet<SystemSetting> SystemSettings { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -160,6 +162,13 @@ public partial class TiramisuShopContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Reviews_Users");
+        });
+
+        modelBuilder.Entity<SystemSetting>(entity =>
+        {
+            entity.HasKey(e => e.Key);
+
+            entity.Property(e => e.Key).HasMaxLength(50);
         });
 
         modelBuilder.Entity<User>(entity =>

@@ -1,0 +1,89 @@
+﻿/* Container phủ toàn màn hình nhưng không chặn click chuột */
+#season-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Quan trọng: để click xuyên qua */
+    z-index: 9999;
+    overflow: hidden;
+    /* Hiệu ứng tan biến dần ở đáy màn hình (Fade out bottom) */
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
+
+/* Phần tử rơi chung */
+.season-flake {
+    position: absolute;
+    top: -30px;
+    /* Animation sẽ được gán trong JS, ở đây chỉ định nghĩa kiểu */
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/* Mùa Đông: Tuyết */
+.snowflake {
+    color: #fff;
+    font-size: 1.2em;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+}
+/* Hiệu ứng ngẫu nhiên cho tuyết */
+.season-flake.snowflake:nth-child(2n) {
+    opacity: 0.6;
+    filter: blur(1px);
+}
+
+.season-flake.snowflake:nth-child(3n) {
+    opacity: 0.3;
+    transform: scale(0.7);
+}
+
+.season-flake.snowflake:nth-child(5n) {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.season-flake.snowflake:nth-child(7n) {
+    opacity: 0.5;
+}
+
+
+/* Mùa Xuân: Cánh hoa */
+.sakura {
+    width: 15px;
+    height: 15px;
+    background: #ffb7b2;
+    border-radius: 15px 0 15px 0;
+    opacity: 0.8;
+}
+
+/* Mùa Thu: Lá */
+.leaf {
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d35400"><path d="M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20C19,20,22,3,22,3,21,5,14,5.25,9,6.25S2,11.5,2,13.5a6.22,6.22,0,0,0,1.75,3.75C7,8,17,8,17,8Z"/></svg>');
+    background-size: cover;
+}
+
+/* Mùa Hạ: Nắng/Đom đóm */
+.sun-particle {
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(255,255,200,0.8) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+}
+
+/* KEYFRAMES */
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0; /* Tan biến hoàn toàn khi kết thúc */
+    }
+}

@@ -6,7 +6,7 @@
     --text-color: #333;
 }
 
-body {
+.content-body {
     background-color: var(--bg-main);
     font-family: 'Kanit', sans-serif;
     display: flex;
@@ -23,6 +23,7 @@ body {
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+
 }
 
 .form-header {

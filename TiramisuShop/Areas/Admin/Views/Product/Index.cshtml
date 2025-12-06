@@ -2,137 +2,123 @@
 
 @{
     ViewData["Title"] = "Quản lý sản phẩm";
-    Layout = null; // Nếu bạn chưa có Layout Admin riêng thì để null hoặc dùng Layout chính
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml"; // Sử dụng Layout mới
 }
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Cheese Cheese Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@section Styles {
     <link rel="stylesheet" href="~/css/admin/admin-product.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
+}
 
-    <div class="admin-container">
-
-        <div class="page-header">
-            <div class="header-left">
-                <h1 class="page-title">Danh sách sản phẩm</h1>
-                <p class="page-subtitle">Quản lý kho hàng và thông tin món ăn</p>
-            </div>
-            <div class="header-right">
-                <a href="/admin/product/create" class="btn-create">
-                    <i class="fa-solid fa-plus"></i> Thêm món mới
-                </a>
-            </div>
+<div class="admin-container">
+    <div class="page-header">
+        <div class="header-left">
+            <h2 class="page-title">Danh sách sản phẩm</h2>
+            <p class="page-subtitle">Quản lý kho hàng và thông tin món ăn</p>
         </div>
-
-        <div class="toolbar-wrapper">
-            <form asp-action="Index" method="get" class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" name="searchString" placeholder="Tìm kiếm theo tên bánh..." value="@Context.Request.Query["searchString"]">
-            </form>
-            <div class="filter-actions">
-                <button class="btn-filter"><i class="fa-solid fa-filter"></i> Lọc</button>
-                <button class="btn-export"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
-            </div>
+        <div class="header-right">
+            <a href="/Admin/Product/Create" class="btn-create">
+                <i class="fa-solid fa-plus"></i> Thêm món mới
+            </a>
         </div>
-
-        <div class="table-container fade-in">
-            <table class="modern-table">
-                <thead>
-                    <tr>
-                        <th width="5%">#ID</th>
-                        <th width="10%">Hình ảnh</th>
-                        <th width="25%">Tên sản phẩm</th>
-                        <th width="15%">Danh mục</th>
-                        <th width="10%">Giá bán</th>
-                        <th width="10%">Kho</th>
-                        <th width="10%">Trạng thái</th>
-                        <th width="15%" class="text-end">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Any())
-                    {
-                        foreach (var item in Model)
-                        {
-                            var img = item.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
-                            <tr>
-                                <td><span class="id-badge">#@item.Id</span></td>
-                                <td>
-                                    <div class="img-wrapper">
-                                        <img src="@img" alt="@item.Name">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-info">
-                                        <h4 class="p-name" style="color: @item.HexColor">@item.Name</h4>
-                                        <span class="p-desc-short">@item.Description</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-tag">@item.Category?.Name</span>
-                                </td>
-                                <td>
-                                    <span class="price-tag">@item.Price.ToString("N0") đ</span>
-                                </td>
-                                <td>
-                                    @if (item.Stock > 10)
-                                    {
-                                        <span class="stock-status in-stock">@item.Stock</span>
-                                    }
-                                    else if (item.Stock > 0)
-                                    {
-                                        <span class="stock-status low-stock">@item.Stock</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="stock-status out-stock">Hết</span>
-                                    }
-                                </td>
-                                <td>
-                                    <div class="status-badges">
-                                        @if (item.IsHot)
-                                        {
-                                            <span class="badge hot" title="Sản phẩm HOT">Hot</span>
-                                        }
-                                        @if (item.EventId != null)
-                                        {
-                                            <span class="badge sale" title="Đang giảm giá">Sale</span>
-                                        }
-                                        @if (!item.IsHot && item.EventId == null)
-                                        {
-                                            <span class="badge normal">--</span>
-                                        }
-                                    </div>
-                                </td>
-                                <td class="text-end">
-                                    <div class="action-buttons">
-                                        <a href="/admin/product/edit/@item.Id" class="btn-action edit" title="Sửa"><i class="fa-solid fa-pen"></i></a>
-                                        <button class="btn-action delete" onclick="deleteProduct(@item.Id)" title="Xóa"><i class="fa-solid fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="8" class="text-center py-5">Không tìm thấy sản phẩm nào.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
     </div>
 
+    <div class="toolbar-wrapper">
+        <form asp-action="Index" method="get" class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" name="searchString" placeholder="Tìm kiếm theo tên bánh..." value="@Context.Request.Query["searchString"]">
+        </form>
+        <div class="filter-actions">
+            <button class="btn-filter"><i class="fa-solid fa-filter"></i> Lọc</button>
+            <button class="btn-export"><i class="fa-solid fa-file-export"></i> Xuất Excel</button>
+        </div>
+    </div>
+
+    <div class="table-container fade-in">
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th width="5%">#ID</th>
+                    <th width="10%">Hình ảnh</th>
+                    <th width="25%">Tên sản phẩm</th>
+                    <th width="15%">Danh mục</th>
+                    <th width="10%">Giá bán</th>
+                    <th width="10%">Kho</th>
+                    <th width="10%">Trạng thái</th>
+                    <th width="15%" class="text-end">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        var img = item.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+                        <tr>
+                            <td><span class="id-badge">#@item.Id</span></td>
+                            <td>
+                                <div class="img-wrapper">
+                                    <img src="@img" alt="@item.Name">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="product-info">
+                                    <h4 class="p-name" style="color: @item.HexColor">@item.Name</h4>
+                                    <span class="p-desc-short">@item.Description</span>
+                                </div>
+                            </td>
+                            <td><span class="category-tag">@item.Category?.Name</span></td>
+                            <td><span class="price-tag">@item.Price.ToString("N0") đ</span></td>
+                            <td>
+                                @if (item.Stock > 10)
+                                {
+                                    <span class="stock-status in-stock">@item.Stock</span>
+                                }
+                                else if (item.Stock > 0)
+                                {
+
+                                    <span class="stock-status low-stock">@item.Stock</span>
+                                }
+                                else
+                                {
+
+                                    <span class="stock-status out-stock">Hết</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="status-badges">
+                                    @if (item.IsHot)
+                                    {
+                                        <span class="badge hot" title="HOT">Hot</span>
+                                    }
+                                    @if (item.EventId != null)
+                                    {
+                                        <span class="badge sale" title="Sale">Sale</span>
+                                    }
+                                    @if (!item.IsHot && item.EventId == null)
+                                    {
+                                        <span class="badge normal">--</span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <div class="action-buttons">
+                                    <a href="/Admin/Product/Edit/@item.Id" class="btn-action edit" title="Sửa"><i class="fa-solid fa-pen"></i></a>
+                                    <button class="btn-action delete" onclick="deleteProduct(@item.Id)" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="8" class="text-center py-5">Không tìm thấy sản phẩm nào.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
     <script>
         function deleteProduct(id) {
             Swal.fire({
@@ -146,7 +132,6 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Gọi AJAX xóa
                     fetch(`/AdminProduct/Delete?id=${id}`, { method: 'POST' })
                     .then(res => res.json())
                     .then(data => {
@@ -160,5 +145,4 @@
             })
         }
     </script>
-</body>
-</html>
+}

@@ -1,0 +1,309 @@
+﻿@{
+    ViewData["Title"] = "Cấu hình giao diện";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    string current = ViewBag.CurrentSeason ?? "None";
+}
+
+<div class="admin-container">
+
+    <div class="page-header text-center mb-5">
+        <h2 class="page-title text-uppercase" style="letter-spacing: 2px; font-weight: 700; color: #4B3022;">
+            <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Hiệu ứng theo mùa
+        </h2>
+        <p class="text-muted">Thay đổi không khí trang web chỉ với một cú nhấp chuột</p>
+    </div>
+
+    <div class="card border-0 p-5 mx-auto" style="max-width: 1000px; border-radius: 25px; box-shadow: 0 10px 40px rgba(75, 48, 34, 0.08);">
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success d-flex align-items-center mb-4" style="border-radius: 15px; background: rgba(46, 204, 113, 0.15); color: #27ae60; border: none;">
+                <i class="fa-solid fa-check-circle me-2 fs-5"></i>
+                <div>@TempData["Success"]</div>
+            </div>
+        }
+
+        <form asp-action="UpdateSeason" method="post">
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <label class="season-option w-100">
+                        <input type="radio" name="season" value="Spring" @(current == "Spring" ? "checked" : "")>
+                        <div class="season-card spring">
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <span class="season-name">Mùa Xuân</span>
+                            <span class="season-desc">Hoa đào rơi</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <label class="season-option w-100">
+                        <input type="radio" name="season" value="Summer" @(current == "Summer" ? "checked" : "")>
+                        <div class="season-card summer">
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <span class="season-name">Mùa Hạ</span>
+                            <span class="season-desc">Nắng vàng</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <label class="season-option w-100">
+                        <input type="radio" name="season" value="Autumn" @(current == "Autumn" ? "checked" : "")>
+                        <div class="season-card autumn">
+                            <div class="icon-circle">
+                                <i class="fa-brands fa-canadian-maple-leaf"></i>
+                            </div>
+                            <span class="season-name">Mùa Thu</span>
+                            <span class="season-desc">Lá phong rơi</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <label class="season-option w-100">
+                        <input type="radio" name="season" value="Winter" @(current == "Winter" ? "checked" : "")>
+                        <div class="season-card winter">
+                            <div class="icon-circle">
+                                <i class="fa-regular fa-snowflake"></i>
+                            </div>
+                            <span class="season-name">Mùa Đông</span>
+                            <span class="season-desc">Tuyết rơi</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <label class="season-option w-100">
+                        <input type="radio" name="season" value="None" @(current == "None" ? "checked" : "")>
+                        <div class="season-card none d-flex flex-row align-items-center justify-content-center gap-3 py-3">
+                            <i class="fa-solid fa-ban fs-4"></i>
+                            <span class="fs-5">Tắt hiệu ứng</span>
+                        </div>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-5">
+                <button type="submit" class="btn-save-config">
+                    <i class="fa-solid fa-floppy-disk me-2"></i> Áp dụng thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Ẩn radio mặc định */
+    .season-option input {
+        display: none;
+    }
+
+    /* CARD CƠ BẢN */
+    .season-card {
+        border: 2px solid #f0f0f0;
+        border-radius: 20px;
+        padding: 30px 20px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: white;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        /* Hiệu ứng khi hover */
+        .season-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #ddd;
+        }
+
+    /* ICON */
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 15px;
+        transition: 0.3s;
+    }
+
+    .season-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #4B3022;
+        margin-bottom: 5px;
+    }
+
+    .season-desc {
+        font-size: 0.9rem;
+        color: #999;
+        font-weight: 400;
+    }
+
+    /* STATE: CHECKED (ĐƯỢC CHỌN) */
+    .season-option input:checked + .season-card {
+        border-color: transparent;
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+        /* Dấu tick check ở góc (Optional) */
+        .season-option input:checked + .season-card::after {
+            content: '\f00c'; /* FontAwesome check */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            background: inherit; /* Lấy màu nền của card */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+    /* --- MÀU SẮC RIÊNG TỪNG MÙA --- */
+
+    /* Spring (Hồng) */
+    .spring .icon-circle {
+        color: #ff9a9e;
+    }
+
+    .season-option input:checked + .spring {
+        background: linear-gradient(135deg, #fad0c4 0%, #ff9a9e 100%);
+        border-color: #ff9a9e;
+    }
+
+        .season-option input:checked + .spring .icon-circle {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .season-option input:checked + .spring span {
+            color: white;
+        }
+
+        .season-option input:checked + .spring::after {
+            background: rgba(255,255,255,0.4);
+        }
+
+    /* Summer (Vàng Cam) */
+    .summer .icon-circle {
+        color: #f6d365;
+    }
+
+    .season-option input:checked + .summer {
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    }
+
+        .season-option input:checked + .summer .icon-circle {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .season-option input:checked + .summer span {
+            color: white;
+        }
+
+        .season-option input:checked + .summer::after {
+            background: rgba(255,255,255,0.4);
+        }
+
+    /* Autumn (Đỏ Cam) */
+    .autumn .icon-circle {
+        color: #d35400;
+    }
+
+    .season-option input:checked + .autumn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+        /* Gradient lá thu */
+        .season-option input:checked + .autumn .icon-circle {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .season-option input:checked + .autumn span {
+            color: white;
+        }
+
+        .season-option input:checked + .autumn::after {
+            background: rgba(255,255,255,0.4);
+        }
+
+    /* Winter (Xanh Dương) */
+    .winter .icon-circle {
+        color: #3498db;
+    }
+
+    .season-option input:checked + .winter {
+        background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    }
+
+        .season-option input:checked + .winter .icon-circle {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .season-option input:checked + .winter span {
+            color: white;
+        }
+
+        .season-option input:checked + .winter::after {
+            background: rgba(255,255,255,0.4);
+        }
+
+    /* None (Xám) */
+    .none {
+        color: #7f8c8d;
+    }
+
+    .season-option input:checked + .none {
+        background: #ecf0f1;
+        border-color: #bdc3c7;
+        color: #2c3e50;
+    }
+
+        .season-option input:checked + .none::after {
+            background: #95a5a6;
+        }
+
+    /* NÚT LƯU */
+    .btn-save-config {
+        padding: 15px 50px;
+        background-color: #4B3022;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(75, 48, 34, 0.3);
+    }
+
+        .btn-save-config:hover {
+            background-color: #FFD700;
+            color: #4B3022;
+            transform: translateY(-3px);
+        }
+</style>
