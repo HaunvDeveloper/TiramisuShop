@@ -1,8 +1,6 @@
 ﻿@using TiramisuShop.Models
 @{
     ViewData["Title"] = "Menu";
-
-    // Lấy dữ liệu từ ViewBag
     var categories = ViewBag.Categories as List<Category>;
     var products = ViewBag.Products as List<Product>;
 }
@@ -11,6 +9,7 @@
     <link rel="stylesheet" href="~/css/product-index.css">
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }
 
 <section id="content" style="background: #FCF5EF;">
@@ -35,7 +34,6 @@
 
             <div class="menu-tabs fade-up delay-2">
                 <button class="tab-btn active" data-filter="all">Tất cả</button>
-
                 @if (categories != null)
                 {
                     foreach (var cat in categories)
@@ -46,23 +44,15 @@
             </div>
 
             <div class="product-grid fade-up delay-3">
-
                 @if (products != null && products.Any())
                 {
                     foreach (var item in products)
                     {
-                        // 1. Xử lý Ảnh: Lấy ảnh đầu tiên hoặc ảnh placeholder
-                        // Lưu ý: Kiểm tra lại tên thuộc tính trong Model là ImageUrl hay ImageURL
                         var firstImage = item.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
-
-                        // 2. Xử lý Màu sắc: Nếu HexColor null thì dùng màu nâu mặc định
                         var nameColor = !string.IsNullOrEmpty(item.HexColor) ? item.HexColor : "#4B3022";
-
-                        // 3. Xử lý Logic Badge
                         bool isSale = item.EventId != null;
 
                         <div class="product-card" data-category="@item.CategoryId">
-
                             @if (isSale)
                             {
                                 <div class="card-badge" style="background: #ff6b81; color: white;">Sale</div>
@@ -78,7 +68,6 @@
 
                             <div class="card-img-wrapper">
                                 <img src="@firstImage" alt="@item.Name">
-
                                 <div class="overlay-actions">
                                     <a href="@Url.Action("Details", "Product", new { id = item.Id })" class="btn-quick-view" title="Xem chi tiết">
                                         <i class="fa-regular fa-eye"></i>
@@ -88,18 +77,13 @@
 
                             <div class="card-body">
                                 <h3 class="product-name" style="color: @nameColor;">@item.Name</h3>
-
                                 <p class="product-desc">@item.Description</p>
-
                                 <div class="price-row">
                                     <span class="price">@item.Price.ToString("N0") đ</span>
 
-                                    <form asp-controller="Cart" asp-action="AddToCart" method="post">
-                                        <input type="hidden" name="productId" value="@item.Id" />
-                                        <button type="submit" class="btn-add-cart" title="Thêm vào giỏ">
-                                            <i class="fa-solid fa-cart-plus"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn-add-cart add-to-cart-btn" data-id="@item.Id" title="Thêm vào giỏ">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -111,90 +95,120 @@
                         <p style="font-family: 'Kanit'; font-size: 1.2rem; color: #666;">Hiện chưa có sản phẩm nào.</p>
                     </div>
                 }
-
             </div>
 
             <div class="text-center mt-5 fade-up delay-3">
                 <a href="#" class="btn-view-more">Xem thêm các loại bánh khác</a>
             </div>
-
         </div>
     </div>
 </section>
 
 @section Scripts {
     <script>
-        // --- 1. SCRIPT SWIPER HERO ---
         var swiper = new Swiper(".introSwiper", {
-            spaceBetween: 0,
-            centeredSlides: true,
-            autoplay: { delay: 3500, disableOnInteraction: false },
-            speed: 3000,
-            loop: true
-        });
+             spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true
+         });
 
-        // --- 2. SCRIPT TÁCH CHỮ (Hiệu ứng nhảy) ---
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            // Animation chữ
             const textElement = document.querySelector('.title-cheese');
-            if (textElement) {
-                const textContent = textElement.innerText;
-                textElement.innerHTML = '';
-                let accumulatedDelay = 1.5;
+            if(textElement) {
+                const textContent = textElement.innerText; textElement.innerHTML = ''; let accumulatedDelay = 1.5;
                 textContent.split('').forEach((char) => {
                     const span = document.createElement('span');
-                    if (char === ' ') {
-                        span.innerHTML = '&nbsp;';
-                        accumulatedDelay += 0.5;
-                    } else {
-                        span.innerText = char;
-                        span.style.animationDelay = accumulatedDelay + 's';
-                        accumulatedDelay += (Math.random() * 0.4) + 0.2;
-                    }
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += (Math.random() * 0.4) + 0.2; }
                     textElement.appendChild(span);
                 });
             }
 
-            // --- 3. SCRIPT SCROLL ANIMATION (Fade Up) ---
+            // Scroll Animation
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
+                entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
 
-            // --- 4. SCRIPT LỌC SẢN PHẨM (FILTER) ---
+            // Filter Logic
             const filterBtns = document.querySelectorAll('.tab-btn');
             const products = document.querySelectorAll('.product-card');
-
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Xử lý class active cho nút
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-
                     const filterValue = btn.getAttribute('data-filter');
-
-                    // Hiệu ứng ẩn hiện sản phẩm
                     products.forEach(item => {
                         const itemCategory = item.getAttribute('data-category');
-
                         if (filterValue === 'all' || itemCategory === filterValue) {
-                            item.style.display = 'block';
-                            setTimeout(() => {
-                                item.style.opacity = '1';
-                                item.style.transform = 'scale(1)';
-                            }, 50);
+                            item.style.display = 'flex';
+                            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 50);
                         } else {
-                            item.style.opacity = '0';
-                            item.style.transform = 'scale(0.8)';
-                            setTimeout(() => {
-                                item.style.display = 'none';
-                            }, 300);
+                            item.style.opacity = '0'; item.style.transform = 'scale(0.8)';
+                            setTimeout(() => { item.style.display = 'none'; }, 300);
                         }
                     });
+                });
+            });
+        });
+
+        // --- AJAX ADD TO CART ---
+        $(document).ready(function () {
+            // Cập nhật số lượng giỏ hàng khi load trang
+            updateCartBadge();
+
+            // Sự kiện click nút thêm giỏ hàng
+            $('.add-to-cart-btn').click(function () {
+                var productId = $(this).data('id');
+                var btn = $(this);
+
+                // Hiệu ứng loading nhỏ trên nút
+                var originalIcon = btn.html();
+                btn.html('<i class="fa-solid fa-spinner fa-spin"></i>').prop('disabled', true);
+
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId, quantity: 1 },
+                    success: function (response) {
+                        btn.html(originalIcon).prop('disabled', false);
+
+                        if (response.success) {
+                            // Cập nhật badge số lượng trên header
+                            $('.cart-badge').text(response.cartCount).show();
+
+                            // Thông báo thành công đẹp
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm thành công!',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast: true,
+                                position: 'top-end',
+                                background: '#FCF5EF',
+                                color: '#4B3022'
+                            });
+                        } else if (response.requireLogin) {
+                            // Yêu cầu đăng nhập
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Bạn chưa đăng nhập',
+                                text: 'Vui lòng đăng nhập để mua bánh nhé!',
+                                confirmButtonText: 'Đăng nhập ngay',
+                                confirmButtonColor: '#4B3022'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/User/Login?returnUrl=' + window.location.pathname;
+                                }
+                            });
+                        } else {
+                            Swal.fire('Lỗi', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        btn.html(originalIcon).prop('disabled', false);
+                        Swal.fire('Lỗi', 'Không thể kết nối đến server.', 'error');
+                    }
                 });
             });
         });

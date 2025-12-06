@@ -130,10 +130,10 @@
     }
 
 .p-name {
-    font-family: "Allura", cursive;
+    font-family: "Pacifico", cursive;
     font-size: 4rem;
     line-height: 1.1;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .p-rating {
@@ -397,3 +397,139 @@
         font-size: 3rem;
     }
 }
+/* CSS CHO PHẦN REVIEW LIST */
+.review-list {
+    margin-bottom: 30px;
+}
+
+.review-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+}
+
+.review-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+.review-content {
+    flex: 1;
+}
+
+.r-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.r-name {
+    font-weight: 600;
+    color: #333;
+    font-family: 'Kanit';
+}
+
+.r-date {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.r-stars {
+    color: #FFD700;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.r-comment {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* CSS CHO FORM REVIEW */
+.review-form-box {
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.form-title {
+    font-family: 'Pacifico';
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: @mainColor;
+}
+
+/* Star Rating Input */
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+
+    .rate:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+    }
+
+    .rate:not(:checked) > label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+
+    .rate > input:checked ~ label {
+        color: #FFD700;
+    }
+
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #FFD700;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Kanit';
+}
+
+.btn-submit-review {
+    background-color: @mainColor;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+    .btn-submit-review:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }

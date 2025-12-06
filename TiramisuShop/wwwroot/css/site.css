@@ -54,7 +54,7 @@ a {
         top: 0;
         left: 0;
         right: 0;
-        z-index: 9999;
+/*        z-index: 9999;*/
         width: 100%;
         transition: all .1s;
         height: 4rem;

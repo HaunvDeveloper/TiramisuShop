@@ -22,145 +22,6 @@
     <link rel="stylesheet" href="~/css/product-details.css">
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* CSS CHO PHẦN REVIEW LIST */
-        .review-list {
-            margin-bottom: 30px;
-        }
-
-        .review-item {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-            display: flex;
-            gap: 20px;
-        }
-
-        .review-avatar {
-            width: 50px;
-            height: 50px;
-            background-color: #eee;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #555;
-            font-size: 1.2rem;
-        }
-
-        .review-content {
-            flex: 1;
-        }
-
-        .r-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .r-name {
-            font-weight: 600;
-            color: #333;
-            font-family: 'Kanit';
-        }
-
-        .r-date {
-            font-size: 0.85rem;
-            color: #999;
-        }
-
-        .r-stars {
-            color: #FFD700;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        .r-comment {
-            font-size: 0.95rem;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        /* CSS CHO FORM REVIEW */
-        .review-form-box {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 30px;
-        }
-
-        .form-title {
-            font-family: 'Pacifico';
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: @mainColor;
-        }
-
-        /* Star Rating Input */
-        .rate {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-
-            .rate:not(:checked) > input {
-                position: absolute;
-                top: -9999px;
-            }
-
-            .rate:not(:checked) > label {
-                float: right;
-                width: 1em;
-                overflow: hidden;
-                white-space: nowrap;
-                cursor: pointer;
-                font-size: 30px;
-                color: #ccc;
-            }
-
-                .rate:not(:checked) > label:before {
-                    content: '★ ';
-                }
-
-            .rate > input:checked ~ label {
-                color: #FFD700;
-            }
-
-            .rate:not(:checked) > label:hover,
-            .rate:not(:checked) > label:hover ~ label {
-                color: #FFD700;
-            }
-
-        .form-group {
-            margin-bottom: 15px;
-            clear: both;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Kanit';
-        }
-
-        .btn-submit-review {
-            background-color: @mainColor;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-            .btn-submit-review:hover {
-                opacity: 0.9;
-                transform: translateY(-2px);
-            }
-    </style>
 }
 
 <section id="content" style="background: #FCF5EF;">
@@ -261,17 +122,19 @@
                         </ul>
                     </div>
 
-                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="p-form">
-                        <input type="hidden" name="productId" value="@Model.Id" />
+                    <div class="p-form">
+                        <input type="hidden" id="productId" value="@Model.Id" />
+
                         <div class="quantity-control">
                             <button type="button" class="qty-btn minus"><i class="fa-solid fa-minus"></i></button>
-                            <input type="number" name="quantity" value="1" min="1" max="@Model.Stock" class="qty-input" readonly>
+                            <input type="number" id="quantity" value="1" min="1" max="@Model.Stock" class="qty-input" readonly>
                             <button type="button" class="qty-btn plus"><i class="fa-solid fa-plus"></i></button>
                         </div>
-                        <button type="submit" class="btn-add-to-cart" style="background-color: @mainColor">
+
+                        <button type="button" id="btnAddToCart" class="btn-add-to-cart" style="background-color: @mainColor">
                             <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
                         </button>
-                    </form>
+                    </div>
 
                     <div class="p-meta">
                         <span><strong>Danh mục:</strong> @Model.Category.Name</span>
@@ -397,10 +260,12 @@
                                     <h3 class="product-name">@item.Name</h3>
                                     <div class="price-row">
                                         <span class="price">@item.Price.ToString("N0") đ</span>
-                                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
-                                            <input type="hidden" name="productId" value="@item.Id" />
-                                            <button type="submit" class="btn-add-cart"><i class="fa-solid fa-cart-plus"></i></button>
-                                        </form>
+                                        <div>
+                                            <button type="button" class="btn-add-cart add-to-cart-btn" data-id="@item.Id" title="Thêm vào giỏ">
+                                                <i class="fa-solid fa-cart-plus"></i>
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -454,7 +319,140 @@
                     if (val < maxStock) qtyInput.value = val + 1;
                 });
             }
+            // --- CODE MỚI: AJAX ADD TO CART ---
+            const btnAdd = document.getElementById('btnAddToCart');
+            if(btnAdd) {
+                btnAdd.addEventListener('click', function() {
+                    const pId = document.getElementById('productId').value;
+                    const qty = document.getElementById('quantity').value;
 
+                    // Hiệu ứng loading
+                    const originalContent = btnAdd.innerHTML;
+                    btnAdd.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                    btnAdd.disabled = true;
+
+                    // Gọi AJAX (Sử dụng Fetch API hoặc jQuery $.ajax đều được, ở đây dùng jQuery cho ngắn gọn nếu project đã có)
+                    // Nếu chưa có jQuery, đây là cách dùng Fetch API chuẩn JS thuần:
+
+                    const formData = new FormData();
+                    formData.append('productId', pId);
+                    formData.append('quantity', qty);
+
+                    fetch('/Cart/AddToCart', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Trả lại trạng thái nút
+                        btnAdd.innerHTML = originalContent;
+                        btnAdd.disabled = false;
+
+                        if(data.success) {
+                            // Cập nhật số lượng trên icon giỏ hàng (nếu có class .cart-badge)
+                            const cartBadge = document.querySelector('.cart-badge');
+                            if(cartBadge && data.cartCount) cartBadge.innerText = data.cartCount;
+
+                            // Thông báo thành công (Toast góc phải)
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm thành công!',
+                                text: data.message,
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                background: '#FCF5EF',
+                                color: '#4B3022'
+                            });
+                        } else if(data.requireLogin) {
+                            // Yêu cầu đăng nhập
+                            Swal.fire({
+                                title: 'Bạn chưa đăng nhập',
+                                text: "Vui lòng đăng nhập để mua hàng!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '@mainColor',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Đăng nhập ngay',
+                                cancelButtonText: 'Để sau'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/User/Login?returnUrl=' + window.location.pathname;
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: data.message,
+                                confirmButtonColor: '@mainColor'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        btnAdd.innerHTML = originalContent;
+                        btnAdd.disabled = false;
+                        Swal.fire('Lỗi', 'Không thể kết nối đến server.', 'error');
+                    });
+                });
+            }
+            // Sự kiện click nút thêm giỏ hàng
+            $('.add-to-cart-btn').click(function () {
+                var productId = $(this).data('id');
+                var btn = $(this);
+
+                // Hiệu ứng loading nhỏ trên nút
+                var originalIcon = btn.html();
+                btn.html('<i class="fa-solid fa-spinner fa-spin"></i>').prop('disabled', true);
+
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId, quantity: 1 },
+                    success: function (response) {
+                        btn.html(originalIcon).prop('disabled', false);
+
+                        if (response.success) {
+                            // Cập nhật badge số lượng trên header
+                            $('.cart-badge').text(response.cartCount).show();
+
+                            // Thông báo thành công đẹp
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm thành công!',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                toast: true,
+                                position: 'top-end',
+                                background: '#FCF5EF',
+                                color: '#4B3022'
+                            });
+                        } else if (response.requireLogin) {
+                            // Yêu cầu đăng nhập
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Bạn chưa đăng nhập',
+                                text: 'Vui lòng đăng nhập để mua bánh nhé!',
+                                confirmButtonText: 'Đăng nhập ngay',
+                                confirmButtonColor: '#4B3022'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/User/Login?returnUrl=' + window.location.pathname;
+                                }
+                            });
+                        } else {
+                            Swal.fire('Lỗi', response.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        btn.html(originalIcon).prop('disabled', false);
+                        Swal.fire('Lỗi', 'Không thể kết nối đến server.', 'error');
+                    }
+                });
+            });
             // Animation scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {

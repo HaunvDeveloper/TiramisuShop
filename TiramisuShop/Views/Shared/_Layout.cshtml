@@ -314,6 +314,25 @@
             }
         }
     </script>
+    <script>
+        function updateCartBadge() {
+                $.get('/Cart/GetCartCount', function (count) {
+                    if (count > 0) {
+                        // Nếu trong layout bạn chưa có thẻ span .cart-badge thì cần thêm vào
+                        // Ví dụ: <span class="cart-badge">0</span> nằm trong nút giỏ hàng ở Header
+                        if ($('.cart-badge').length === 0) {
+                             $('.header-cart-btn').append('<span class="cart-badge">' + count + '</span>');
+                        } else {
+                             $('.cart-badge').text(count).show();
+                        }
+                    }
+                });
+            }
+            // Gọi hàm khi trang được tải
+            $(document).ready(function () {
+                updateCartBadge();
+            });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
