@@ -7,7 +7,6 @@ Regen EntityFramework with SQL server
 
 Scaffold-DbContext "Data Source=LAPTOP-ENCKOU6S;Initial Catalog=TiramisuShop;Integrated Security=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
 
-Data Source=112.78.2.42,1433;Initial Catalog=gol82750_webgoli.com.vn;User ID=gol82750_webgoli.com.vn;Password=Webgoli121@;Trust Server Certificate=True
  * 
  */
 
