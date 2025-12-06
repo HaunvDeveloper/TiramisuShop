@@ -74,8 +74,11 @@
                 </div>
 
                 <div class="header-right">
-
-                    @if (User.Identity.IsAuthenticated)
+                    <a href="@Url.Action("Index", "Cart")" class="header-cart-btn">
+                        <img src="~/assets/images/cart-shopping-solid-full.svg" alt="Cart">
+                        @* <span class="cart-badge">0</span> *@
+                    </a>
+                    @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         // Lấy tên hiển thị ngắn gọn
                         var fullName = User.FindFirst("FullName")?.Value ?? User.Identity.Name;
@@ -111,10 +114,7 @@
                         </a>
                     }
 
-                    <a href="@Url.Action("Index", "Cart")" class="header-cart-btn">
-                        <img src="~/assets/images/cart-shopping-solid-full.svg" alt="Cart">
-                        @* <span class="cart-badge">0</span> *@
-                    </a>
+                    
 
                 </div>
             </div>
@@ -157,54 +157,6 @@
                         
                     </div>
                 </div>
-                @* <div class="logo container">
-                    <img src="~/assets/images/logomini.png" alt="Golifresh Logo">
-                    <h1>Cheese Cheese</h1>
-                </div>
-                <div class="container">
-                    <div class="fintro">
-                        <h4>Localizer["name-company"]</h4>
-                        <p>
-                            Localizer["office-content"]<br />
-                            Localizer["office-address"]: Localizer["office-address-content"]<br />
-                            Localizer["workshop_address"]: Localizer["workshop_address_content"]
-                        </p>
-                    </div>
-
-                    <div class="fintro">
-                        <h4>Localizer["branch-name"]</h4>
-                        <p>
-                            Localizer["branch-content"]<br />
-                            Localizer["branch-address"]: Localizer["branch-address-content"]
-                        </p>
-                    </div>
-                    <div class="fintro">
-                        <div class="contact-info">
-                            <img src="~/assets/icons/mail.svg" alt="">
-                            <p><a href="mailto:goodslinkvn@gmail.com">goodslinkvn@gmail.com</a></p>
-                        </div>
-
-                        <div class="contact-info">
-                            <img src="~/assets/icons/phone-regular.svg" alt="">
-                            <p><a href="tel:(028) 3636 6887">(028) 3636 6887 </a></p>
-                        </div>
-                        <div class="contact-info">
-                            <img src="~/assets/icons/phone-regular.svg" alt="">
-                            <p><a href="tel:+84941706750">(+84) 941706750 </a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="social-contact container">
-                    <a href="https://www.facebook.com/golifresh/" class="social-media">
-                        <img src="~/assets/icons/facebook.png" alt="">
-                    </a>
-                    <a href="https://www.youtube.com/@@Goliexport" class="social-media">
-                        <img src="~/assets/icons/youtube.png" alt="">
-                    </a>
-                    <a href="https://zalo.me/84941706750" class="social-media">
-                        <img src="~/assets/icons/zalo.png" alt="Zalo" />
-                    </a>
-                </div> *@
             </div>
 
             <div class="endfooter">

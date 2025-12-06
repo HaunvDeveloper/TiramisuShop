@@ -1,0 +1,267 @@
+﻿@model TiramisuShop.Models.Cart
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+@section Links {
+    <link rel="stylesheet" href="~/css/cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+
+<section id="content" style="background: #FCF5EF;">
+    <div id="intro-picture">
+        <div class="swiper mySwiper introSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="~/assets/images/Home.png" alt="Cart Banner"></div>
+            </div>
+        </div>
+        <h2 class="title-cheese">CHEESE CHEESE</h2>
+        <h5 class="subtitle-cheese">Giỏ hàng của bạn</h5>
+    </div>
+
+    <div class="cart-section">
+        <div class="container">
+
+            @if (Model.CartItems != null && Model.CartItems.Any())
+            {
+                <form asp-action="Checkout" method="post" id="cartForm">
+                    <div class="cart-container fade-up">
+
+                        <div class="cart-table-wrapper">
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">
+                                            <input type="checkbox" id="checkAll" />
+                                        </th>
+                                        <th>Sản phẩm</th>
+                                        <th>Đơn giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CartItems)
+                                    {
+                                        var img = item.Product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/assets/images/no-image.png";
+                                        var itemTotal = item.Quantity * item.Product.Price;
+
+                                        <tr id="row-@item.Id">
+                                            <td>
+                                                <input type="checkbox" name="selectedItems" value="@item.Id" class="item-checkbox"
+                                                       data-price="@item.Product.Price" data-id="@item.Id" />
+                                            </td>
+
+                                            <td>
+                                                <div class="cart-product-info">
+                                                    <img src="@img" alt="@item.Product.Name">
+                                                    <div>
+                                                        <a href="/Product/Details/@item.ProductId" class="p-name">@item.Product.Name</a>
+                                                        <p class="p-cat">@item.Product.Category?.Name</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="p-price" data-value="@item.Product.Price">
+                                                @item.Product.Price.ToString("N0") đ
+                                            </td>
+
+                                            <td>
+                                                <div class="qty-control-sm">
+                                                    <button type="button" class="btn-qty minus" data-id="@item.Id">-</button>
+                                                    <input type="number" class="input-qty" id="qty-@item.Id" value="@item.Quantity" min="1" readonly>
+                                                    <button type="button" class="btn-qty plus" data-id="@item.Id">+</button>
+                                                </div>
+                                            </td>
+
+                                            <td class="p-total" id="total-@item.Id">
+                                                @itemTotal.ToString("N0") đ
+                                            </td>
+
+                                            <td>
+                                                <button type="button" class="btn-remove" onclick="removeItem(@item.Id)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="cart-summary fade-up delay-2">
+                            <div class="summary-box">
+                                <h3>Tổng cộng</h3>
+                                <div class="summary-row">
+                                    <span>Tạm tính:</span>
+                                    <span id="subTotal">0 đ</span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Tổng thanh toán:</span>
+                                    <span id="finalTotal">0 đ</span>
+                                </div>
+                                <button type="submit" class="btn-checkout disabled" id="btnCheckout" disabled>
+                                    Tiến hành đặt hàng <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            }
+            else
+            {
+                <div class="empty-cart text-center fade-up">
+                    <img src="~/assets/images/empty-cart.png" alt="Empty Cart" style="width: 200px; margin-bottom: 20px;margin-right:60px;">
+                    <h3>Giỏ hàng của bạn đang trống</h3>
+                    <p>Hãy dạo một vòng và chọn những chiếc bánh ngọt ngào nhé!</p>
+                    <a href="/Product" class="btn-go-shop">Xem thực đơn ngay</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var swiperIntro = new Swiper(".introSwiper", { spaceBetween: 0, centeredSlides: true, autoplay: { delay: 3500, disableOnInteraction: false }, speed: 3000, loop: true });
+
+        // Animation Title (Giữ nguyên code cũ)
+        document.addEventListener("DOMContentLoaded", function() {
+             const textElement = document.querySelector('.title-cheese');
+             if(textElement) {
+                const textContent = textElement.innerText; textElement.innerHTML = ''; let accumulatedDelay = 1.5;
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    if (char === ' ') { span.innerHTML = '&nbsp;'; accumulatedDelay += 0.5; }
+                    else { span.innerText = char; span.style.animationDelay = accumulatedDelay + 's'; accumulatedDelay += 0.4; }
+                    textElement.appendChild(span);
+                });
+            }
+            const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+
+        // --- LOGIC GIỎ HÀNG (JQUERY) ---
+        $(document).ready(function() {
+
+            // 1. Format tiền tệ
+            function formatMoney(amount) {
+                return amount.toLocaleString('vi-VN') + ' đ';
+            }
+
+            // 2. Tính tổng tiền các món ĐƯỢC CHECK
+            function calculateTotal() {
+                let total = 0;
+                let hasChecked = false;
+
+                $('.item-checkbox:checked').each(function() {
+                    hasChecked = true;
+                    let id = $(this).data('id');
+                    let price = parseFloat($(this).data('price'));
+                    let qty = parseInt($('#qty-' + id).val());
+                    total += price * qty;
+                });
+
+                $('#subTotal').text(formatMoney(total));
+                $('#finalTotal').text(formatMoney(total));
+
+                // Disable nút thanh toán nếu không chọn món nào
+                if(hasChecked) {
+                    $('#btnCheckout').prop('disabled', false).removeClass('disabled');
+                } else {
+                    $('#btnCheckout').prop('disabled', true).addClass('disabled');
+                }
+            }
+
+            // 3. Sự kiện Checkbox
+            $('#checkAll').change(function() {
+                $('.item-checkbox').prop('checked', $(this).prop('checked'));
+                calculateTotal();
+            });
+
+            $('.item-checkbox').change(function() {
+                // Nếu bỏ check 1 cái thì bỏ checkAll
+                if(false == $(this).prop("checked")){ $("#checkAll").prop('checked', false); }
+                // Nếu check hết thì checkAll tự check
+                if ($('.item-checkbox:checked').length == $('.item-checkbox').length ){ $("#checkAll").prop('checked', true); }
+
+                calculateTotal();
+            });
+
+            // 4. Tăng giảm số lượng (AJAX)
+            $('.btn-qty').click(function() {
+                let btn = $(this);
+                let id = btn.data('id');
+                let input = $('#qty-' + id);
+                let currentVal = parseInt(input.val());
+                let newVal = currentVal;
+
+                if (btn.hasClass('plus')) {
+                    newVal = currentVal + 1;
+                } else if (btn.hasClass('minus') && currentVal > 1) {
+                    newVal = currentVal - 1;
+                }
+
+                if (newVal !== currentVal) {
+                    // Update UI ngay lập tức cho mượt
+                    input.val(newVal);
+
+                    // Cập nhật thành tiền từng món
+                    let price = parseFloat($(`#row-${id} .item-checkbox`).data('price'));
+                    $(`#total-${id}`).text(formatMoney(price * newVal));
+
+                    // Gọi AJAX update server
+                    $.ajax({
+                        url: '/Cart/UpdateQuantity',
+                        type: 'POST',
+                        data: { itemId: id, quantity: newVal },
+                        success: function(res) {
+                            if(res.success) {
+                                calculateTotal(); // Tính lại tổng bill
+                                updateCartBadge();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // 5. Xóa món hàng
+        function removeItem(id) {
+            Swal.fire({
+                title: 'Xóa món này?',
+                text: "Bạn có chắc muốn xóa sản phẩm này khỏi giỏ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4B3022',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đúng, xóa nó!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Cart/RemoveItem',
+                        type: 'POST',
+                        data: { itemId: id },
+                        success: function(res) {
+                            if(res.success) {
+                                $(`#row-${id}`).remove(); // Xóa dòng khỏi bảng
+                                // Check lại xem còn món nào không
+                                if($('.item-checkbox').length === 0) {
+                                    location.reload(); // Reload để hiện giao diện giỏ trống
+                                } else {
+                                    // Trigger tính lại tiền (giả lập sự kiện change)
+                                    $('.item-checkbox').first().trigger('change');
+                                }
+                                Swal.fire('Đã xóa!', 'Sản phẩm đã được xóa.', 'success');
+                            }
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+}

@@ -22,6 +22,25 @@
     <link rel="stylesheet" href="~/css/product-details.css">
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .form-title {
+            font-family: 'Pacifico';
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: @mainColor;
+        }
+
+        .btn-submit-review {
+            background-color: @mainColor;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+    </style>
 }
 
 <section id="content" style="background: #FCF5EF;">
@@ -200,11 +219,10 @@
                             <h3 class="form-title">Viết đánh giá của bạn</h3>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <form asp-controller="Review" asp-action="AddReview" method="post">
+                                <form id="reviewForm">
                                     <input type="hidden" name="ProductId" value="@Model.Id" />
 
                                     <div class="form-group">
-                                        <label>Đánh giá của bạn:</label>
                                         <div class="rate">
                                             <input type="radio" id="star5" name="Rating" value="5" checked />
                                             <label for="star5" title="5 stars">5 stars</label>
@@ -461,7 +479,56 @@
             });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
         });
+        $(document).ready(function() {
+            $('#reviewForm').on('submit', function(e) {
+                e.preventDefault(); // Ngăn reload trang
 
+                var formData = $(this).serialize();
+                var btn = $('.btn-submit-review');
+                var originalText = btn.text();
+
+                // Hiệu ứng loading
+                btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...').prop('disabled', true);
+
+                $.ajax({
+                    url: '/Review/AddReview',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        btn.html(originalText).prop('disabled', false);
+
+                        if (response.success) {
+                            // Thông báo thành công
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: response.message,
+                                confirmButtonColor: '@mainColor'
+                            }).then(() => {
+                                // Reload trang sau khi bấm OK để hiện review mới
+                                window.location.reload();
+                            });
+
+                            // Xóa form
+                            $('#reviewForm')[0].reset();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: response.message,
+                                confirmButtonColor: '@mainColor'
+                            });
+                        }
+                    },
+                    error: function() {
+                        btn.html(originalText).prop('disabled', false);
+                        Swal.fire('Lỗi', 'Không thể kết nối đến server.', 'error');
+                    }
+                });
+            });
+        
+            
+        });
         // Chuyển Tab
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;

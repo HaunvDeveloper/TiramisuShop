@@ -99,6 +99,38 @@ namespace TiramisuShop.Controllers
                     // 5. Sign In (Tạo Cookie)
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
+                    // MERGE CART LOGIC
+                    var sessionCart = HttpContext.Session.Get<List<CartItem>>("GuestCart");
+                    if (sessionCart != null && sessionCart.Any())
+                    {
+                        // 1. Lấy Cart DB của User
+                        var dbCart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == user.Id);
+                        if (dbCart == null)
+                        {
+                            dbCart = new Cart { UserId = user.Id };
+                            _context.Carts.Add(dbCart);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // 2. Chuyển items từ Session sang DB
+                        foreach (var item in sessionCart)
+                        {
+                            var dbItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CartId == dbCart.Id && x.ProductId == item.ProductId);
+                            if (dbItem != null)
+                            {
+                                dbItem.Quantity += item.Quantity;
+                            }
+                            else
+                            {
+                                _context.CartItems.Add(new CartItem { CartId = dbCart.Id, ProductId = item.ProductId, Quantity = item.Quantity });
+                            }
+                        }
+                        await _context.SaveChangesAsync();
+
+                        // 3. Xóa Session
+                        HttpContext.Session.Remove("GuestCart");
+                    }
+
                     // 6. Redirect về trang cũ hoặc trang chủ
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                     {
