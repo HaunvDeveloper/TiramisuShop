@@ -5,7 +5,7 @@
 Regen EntityFramework with SQL server
 
 
-Scaffold-DbContext "Data Source=LAPTOP-ENCKOU6S;Initial Catalog=TiramisuShop;Integrated Security=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+Scaffold-DbContext "Data Source=168.231.122.98;Initial Catalog=TiramisuShop;Persist Security Info=True;User ID=sa;Password=NguyenH@u100304;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
 
  * 
  */
@@ -89,7 +89,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

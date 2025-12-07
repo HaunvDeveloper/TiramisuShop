@@ -398,12 +398,19 @@
 
 .section-gallery-slider {
     background-image: url('/assets/images/bg-nau.png');
-    background-size: 100% 100%; /* Kéo giãn ảnh full khung */
+    background-size: 140% 100%; /* Kéo giãn ảnh full khung */
     background-repeat: no-repeat;
     background-position: center;
     padding: 80px 60px;
     position: relative;
     overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .section-gallery-slider {
+        padding: 20px 10px;
+        background-size: 300% 110%; /* Kéo giãn ảnh full khung */
+    }
 }
 
 /* Container của Swiper */
@@ -652,11 +659,11 @@
 /* Typography Tiêu đề */
 .hours-title {
     font-family: "Allura", cursive;
-    font-size: 3.3rem;
+    font-size: 2.7rem;
     color: #4B3022;
     margin-bottom: 30px;
     font-weight: bold;
-    text-wrap: nowrap;
+    width: 100%;
 }
 
 /* Typography Danh sách */

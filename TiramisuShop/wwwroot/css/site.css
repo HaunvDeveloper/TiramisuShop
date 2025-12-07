@@ -1000,3 +1000,8 @@ a {
         -o-transform: rotate(-135deg);
         transform: rotate(-135deg);
     }
+
+
+button {
+    cursor: pointer !important;
+}

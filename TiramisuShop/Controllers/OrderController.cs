@@ -78,8 +78,8 @@ namespace TiramisuShop.Controllers
             var idList = itemIds.Split(',').Select(long.Parse).ToList();
 
             var cartItems = await _context.CartItems
-                .Include(c => c.Product)
-                    .ThenInclude(p => p.Event) // <--- Include Event để tính giá lưu DB
+                .Include(c => c.Product).ThenInclude(p => p.ProductImages)
+                .Include(c => c.Product).ThenInclude(p => p.Event) // <--- QUAN TRỌNG: Include Event
                 .Where(c => c.Cart.UserId == userId && idList.Contains(c.Id))
                 .ToListAsync();
             decimal orderTotal = 0;

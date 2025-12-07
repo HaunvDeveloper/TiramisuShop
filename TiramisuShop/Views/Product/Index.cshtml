@@ -7,7 +7,7 @@
 }
 
 @section Links {
-    <link rel="stylesheet" href="~/css/product-index.css">
+    <link rel="stylesheet" href="~/css/product-index.css" asp-append-version="true">
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Kanit:wght@300;400;500;600&family=Pacifico&display=swap" rel="stylesheet">
 }
 
@@ -30,7 +30,12 @@
                 <p class="menu-desc">Những chiếc Tiramisu tươi ngon nhất được làm mới mỗi ngày.</p>
                 <img src="~/assets/images/divider-wheat.png" class="divider-img" alt="">
             </div>
-
+            <div class="search-box-wrapper fade-up delay-1">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Bạn đang tìm loại bánh nào? (Ví dụ: Dâu, Matcha...)" autocomplete="off">
+                </div>
+            </div>
             <div class="menu-tabs fade-up delay-2">
                 <button class="tab-btn active" data-filter="all">Tất cả</button>
                 @if (categories != null)
@@ -144,7 +149,10 @@
                 }
             </div>
             <div class="text-center mt-5 fade-up delay-3">
-                <a href="#" class="btn-view-more">Xem thêm các loại bánh khác</a>
+                <a href="#" class="btn-view-more">
+                    @* Kéo lên trên *@
+                    Kéo lên trên <i class="fa-solid fa-arrow-up-long"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -175,26 +183,66 @@
             }, { threshold: 0.1 });
             document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
 
-            // Filter Logic
+                    // --- LOGIC LỌC & TÌM KIẾM SẢN PHẨM (MỚI) ---
             const filterBtns = document.querySelectorAll('.tab-btn');
             const products = document.querySelectorAll('.product-card');
+            const searchInput = document.getElementById('searchInput');
+
+            // Hàm lọc chung
+            function filterProducts() {
+                // 1. Lấy danh mục đang active
+                const activeBtn = document.querySelector('.tab-btn.active');
+                const categoryFilter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+
+                // 2. Lấy từ khóa tìm kiếm (chuyển về chữ thường, bỏ khoảng trắng thừa)
+                const searchTerm = searchInput.value.toLowerCase().trim();
+
+                let hasResult = false; // Biến kiểm tra có kết quả không
+
+                products.forEach(item => {
+                    // Lấy thông tin sản phẩm
+                    const itemCategory = item.getAttribute('data-category');
+                    // Tìm tên sản phẩm trong thẻ h3.product-name
+                    const itemName = item.querySelector('.product-name').innerText.toLowerCase();
+
+                    // Kiểm tra điều kiện
+                    const matchesCategory = (categoryFilter === 'all' || itemCategory === categoryFilter);
+
+                    // Tìm kiếm không dấu (Optional: Nếu muốn xịn hơn thì dùng thư viện bỏ dấu tiếng Việt)
+                    // Ở đây dùng includes cơ bản:
+                    const matchesSearch = itemName.includes(searchTerm);
+
+                    if (matchesCategory && matchesSearch) {
+                        item.style.display = 'flex';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 50);
+                        hasResult = true;
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.8)';
+                        setTimeout(() => { item.style.display = 'none'; }, 300);
+                    }
+                });
+
+                // Xử lý thông báo "Không tìm thấy" (Nếu bạn có div thông báo, ở đây ẩn/hiện nó)
+                // Ví dụ: toggleNoResult(hasResult);
+            }
+
+            // Sự kiện Click Tab
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    const filterValue = btn.getAttribute('data-filter');
-                    products.forEach(item => {
-                        const itemCategory = item.getAttribute('data-category');
-                        if (filterValue === 'all' || itemCategory === filterValue) {
-                            item.style.display = 'flex';
-                            setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 50);
-                        } else {
-                            item.style.opacity = '0'; item.style.transform = 'scale(0.8)';
-                            setTimeout(() => { item.style.display = 'none'; }, 300);
-                        }
-                    });
+                    filterProducts(); // Gọi hàm lọc chung
                 });
             });
+
+            // Sự kiện Nhập liệu tìm kiếm
+            if(searchInput) {
+                searchInput.addEventListener('input', filterProducts);
+            }
         });
 
         // --- AJAX ADD TO CART ---
